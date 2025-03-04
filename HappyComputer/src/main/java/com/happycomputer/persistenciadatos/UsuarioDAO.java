@@ -10,7 +10,7 @@ import java.util.List;
 public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     @Override
     public UsuarioModelo insert(UsuarioModelo entity) throws SQLException {
-        String sql = "INSERT INTO usuario (usuario, password, idRol) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Usuario (usuario, password, id_rol) VALUES (?, ?, ?)";
         try(Connection con = ConectDB.getConnection();
         PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getUsuario());

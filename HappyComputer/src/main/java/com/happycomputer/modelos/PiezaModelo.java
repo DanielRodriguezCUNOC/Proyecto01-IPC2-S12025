@@ -3,12 +3,12 @@ package com.happycomputer.modelos;
 public class PiezaModelo {
     private Integer id;
     private String nombre;
-    private Integer costo;
+    private Double costo;
 
     public PiezaModelo() {
     }
 
-    public PiezaModelo(Integer id, String nombre, Integer costo) {
+    public PiezaModelo(Integer id, String nombre, Double costo) {
         this.id = id;
         this.nombre = nombre;
         this.costo = costo;
@@ -30,11 +30,11 @@ public class PiezaModelo {
         this.nombre = nombre;
     }
 
-    public Integer getCosto() {
+    public Double getCosto() {
         return costo;
     }
 
-    public void setCosto(Integer costo) {
+    public void setCosto(Double costo) {
         this.costo = costo;
     }
 

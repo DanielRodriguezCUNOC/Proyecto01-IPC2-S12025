@@ -11,7 +11,6 @@ public class ConectDB {
     private static final String PASSWORD = "proyectos";
 
     private static Connection connection;
-
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
