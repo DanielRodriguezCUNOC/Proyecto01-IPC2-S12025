@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConectDB {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/db_crud_user?useSSL=false&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/happycomputer?useSSL=false&serverTimezone=UTC";
     private static final String USER = "ipc2_user";
     private static final String PASSWORD = "proyectos";
 

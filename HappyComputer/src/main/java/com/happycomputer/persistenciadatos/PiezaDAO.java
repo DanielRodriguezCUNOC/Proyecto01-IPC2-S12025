@@ -15,12 +15,12 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     @Override
     public PiezaModelo insert(PiezaModelo entity) throws SQLException {
         String sql = "INSERT INTO Pieza (nombre, costo) VALUES (?, ?)";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement stmt = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, entity.getNombre());
-            stmt.setDouble(2, entity.getCosto());
-            int affectedRows = stmt.executeUpdate();
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, entity.getNombre());
+            ps.setDouble(2, entity.getCosto());
+            int affectedRows = ps.executeUpdate();
             if(affectedRows > 0) {
-               try(ResultSet generatedKeys = stmt.getGeneratedKeys();){
+               try(ResultSet generatedKeys = ps.getGeneratedKeys();){
                      if (generatedKeys.next()) {
                           entity.setId(generatedKeys.getInt(1));
                      }
@@ -34,28 +34,28 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     @Override
     public void update(PiezaModelo entity) throws SQLException {
         String sql = "UPDATE Pieza SET nombre = ?, costo = ? WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement stmt = connect.prepareStatement(sql)) {
-            stmt.setString(1, entity.getNombre());
-            stmt.setDouble(2, entity.getCosto());
-            stmt.setInt(3, entity.getId());
-            stmt.executeUpdate();
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setString(1, entity.getNombre());
+            ps.setDouble(2, entity.getCosto());
+            ps.setInt(3, entity.getId());
+            ps.executeUpdate();
         }
     }
 
     @Override
     public void delete(Integer id) throws SQLException {
         String sql = "DELETE FROM Pieza WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement stmt = connect.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
         }
     }
     @Override
     public PiezaModelo findById(Integer id) throws SQLException {
       String sql = "SELECT * FROM Pieza WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement stmt = connect.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try(ResultSet rs = stmt.executeQuery()) {
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try(ResultSet rs = ps.executeQuery()) {
                 if(rs.next()) {
                    return new PiezaModelo(
                     rs.getInt("id"),
@@ -73,7 +73,7 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
         List<PiezaModelo> piezas = new ArrayList<>();
         String sql = "SELECT * FROM Pieza";
         try(Connection connect = ConectDB.getConnection();
-            PreparedStatement stmt = connect.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while(rs.next()) {
                 piezas.add(new PiezaModelo(
                     rs.getInt("id"),

@@ -8,12 +8,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Area Ensamblaje</title>
+    <title>Dashboard Fábrica</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
 
-<h1 class="text-3xl font-bold mb-4 text-center">Area Ensamblaje</h1>
+<h1 class="text-3xl font-bold mb-4 text-center">Dashboard Fábrica</h1>
 
 <div class="container mx-auto bg-white shadow-md p-6 rounded-lg">
     <h2 class="text-xl font-semibold mb-4">Computadoras Ensambladas</h2>
@@ -42,7 +42,7 @@
     </table>
 
     <h2 class="text-xl font-semibold mt-6">Agregar Ensamblaje</h2>
-    <form action="SvEnsamble" method="post" class="mt-4">
+    <form action="ControladorFabrica" method="post" class="mt-4">
         <input type="hidden" name="accion" value="agregarEnsamblaje">
         <input type="text" name="idComputadora" placeholder="ID Computadora" required class="border p-2 mr-2">
         <input type="text" name="idUsuario" placeholder="ID Usuario" required class="border p-2 mr-2">
@@ -77,7 +77,7 @@
     </table>
 
     <h2 class="text-xl font-semibold mt-6">Agregar Pieza</h2>
-    <form action="SvEnsamble" method="post" class="mt-4">
+    <form action="ControladorFabrica" method="post" class="mt-4">
         <input type="hidden" name="accion" value="agregarPieza">
         <input type="text" name="nombre" placeholder="Nombre de Pieza" required class="border p-2 mr-2">
         <input type="number" name="costo" step="0.01" placeholder="Costo" required class="border p-2 mr-2">

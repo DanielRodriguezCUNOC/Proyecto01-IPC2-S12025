@@ -3,17 +3,16 @@ package com.happycomputer.modelos;
 public class ComputadoraModelo {
     private Integer id;
     private String nombre;
-    private Integer precio_venta;
+    private Double precio_venta;
     private Boolean estado;
 
     public ComputadoraModelo() {
     }
 
-    public ComputadoraModelo(Integer id, String nombre, Integer precio_venta, Boolean estado) {
+    public ComputadoraModelo(Integer id, String nombre, Double precio_venta) {
         this.id = id;
         this.nombre = nombre;
         this.precio_venta = precio_venta;
-        this.estado = estado;
     }
 
     public Integer getId() {
@@ -32,11 +31,11 @@ public class ComputadoraModelo {
         this.nombre = nombre;
     }
 
-    public Integer getPrecio_venta() {
+    public Double getPrecioVenta() {
         return precio_venta;
     }
 
-    public void setPrecio_venta(Integer precio_venta) {
+    public void setPrecioVenta(Double precio_venta) {
         this.precio_venta = precio_venta;
     }
 

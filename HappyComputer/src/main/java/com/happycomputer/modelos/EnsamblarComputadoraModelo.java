@@ -6,13 +6,13 @@ public class EnsamblarComputadoraModelo {
     private Integer id;
     private Integer idComputadora;
     private Integer idUsuario;
-    private Integer costoEnsamble;
+    private Double costoEnsamble;
     private Date fechaEnsamble;
 
     public EnsamblarComputadoraModelo() {
     }
 
-    public EnsamblarComputadoraModelo(Integer id, Integer idComputadora, Integer idUsuario, Integer costoEnsamble, Date fechaEnsamble) {
+    public EnsamblarComputadoraModelo(Integer id, Integer idComputadora, Integer idUsuario, Double costoEnsamble, Date fechaEnsamble) {
         this.id = id;
         this.idComputadora = idComputadora;
         this.idUsuario = idUsuario;
@@ -44,11 +44,11 @@ public class EnsamblarComputadoraModelo {
         this.idUsuario = idUsuario;
     }
 
-    public Integer getCostoEnsamble() {
+    public Double getCostoEnsamble() {
         return costoEnsamble;
     }
 
-    public void setCosto_ensamble(Integer costoEnsamble) {
+    public void setCosto_ensamble(Double costoEnsamble) {
         this.costoEnsamble = costoEnsamble;
     }
 
