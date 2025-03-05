@@ -4,110 +4,121 @@
 <%@ page import="com.happycomputer.persistenciadatos.InventarioComputadoraDAO" %>
 <%@ page import="com.happycomputer.modelos.InventarioPiezaModelo" %>
 <%@ page import="com.happycomputer.modelos.InventarioComputadoraModelo" %>
-<%@ page import="com.happycomputer.persistenciadatos.EnsamblarComputadoraDAO" %>
-<%@ page import="com.happycomputer.modelos.EnsamblarComputadoraModelo" %>
+<%@ page import="com.happycomputer.modelos.UsuarioModelo" %>
+<%@ page import="com.happycomputer.persistenciadatos.PiezaDAO" %>
+<%@ page import="com.happycomputer.persistenciadatos.UsuarioDAO" %>
+<%@ page import="java.sql.SQLException" %>
+<%
+    PiezaDAO piezaDAO = new PiezaDAO();
+    InventarioPiezaDAO iPiezaDAO = new InventarioPiezaDAO();
+    InventarioComputadoraDAO computadoraDAO = new InventarioComputadoraDAO();
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+    List<InventarioPiezaModelo> piezas = null;
+    List<InventarioComputadoraModelo> computadoras = null;
+    List<UsuarioModelo> ensambladores = null;
+
+    try {
+        piezas = iPiezaDAO.findAll();
+        computadoras = computadoraDAO.findAll();
+        ensambladores = usuarioDAO.findByRol(1);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        out.println("Error al obtener datos: " + e.getMessage());
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Dashboard Fábrica</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<h1>Área de Ensamblaje</h1>
+<body class="bg-gray-100 p-6">
+<div class="container mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Dashboard Área de Ensamblaje</h1>
 
-<h2>Inventario de Piezas</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Pieza</th>
-        <th>Cantidad</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        InventarioPiezaDAO piezaDAO = new InventarioPiezaDAO();
-        List<InventarioPiezaModelo> piezas = piezaDAO.findAll();
-        for (InventarioPiezaModelo pieza : piezas) {
-    %>
-    <tr>
-        <td><%= pieza.getId() %></td>
-        <td><%= pieza.getIdPieza() %></td>
-        <td><%= pieza.getCantidad() %></td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
+    <!-- Tabla de Inventario de Piezas -->
+    <h2 class="text-xl font-semibold mt-4">Inventario de Piezas</h2>
+    <table class="w-full mt-2 border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">ID Pieza</th>
+            <th class="border p-2">Cantidad</th>
+            <th class="border p-2">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (piezas != null) { %>
+        <% for (InventarioPiezaModelo pieza : piezas) { %>
+        <tr>
+            <td class="border p-2"><%= pieza.getId() %></td>
+            <td class="border p-2"><%= pieza.getIdPieza() %></td>
+            <td class="border p-2"><%= pieza.getCantidad() %></td>
+            <td class="border p-2">
+                <button class="bg-blue-500 text-white px-2 py-1 rounded">Editar</button>
+                <button class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
+            </td>
+        </tr>
+        <% } %>
+        <% } %>
+        </tbody>
+    </table>
 
-<h2>Inventario de Computadoras Ensambladas</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Computadora</th>
-        <th>Cantidad</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        InventarioComputadoraDAO computadoraDAO = new InventarioComputadoraDAO();
-        List<InventarioComputadoraModelo> computadoras = computadoraDAO.findAll();
-        for (InventarioComputadoraModelo computadora : computadoras) {
-    %>
-    <tr>
-        <td><%= computadora.getId() %></td>
-        <td><%= computadora.getIdEnsamblarComputadora() %></td>
-        <td><%= computadora.getCantidad() %></td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
+    <!-- Tabla de Computadoras Ensambladas -->
+    <h2 class="text-xl font-semibold mt-6">Computadoras Ensambladas</h2>
+    <table class="w-full mt-2 border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">ID Ensamblar Computadora</th>
+            <th class="border p-2">Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (computadoras != null) { %>
+        <% for (InventarioComputadoraModelo computadora : computadoras) { %>
+        <tr>
+            <td class="border p-2"><%= computadora.getId() %></td>
+            <td class="border p-2"><%= computadora.getIdEnsamblarComputadora() %></td>
+            <td class="border p-2"><%= computadora.getCantidad() %></td>
+        </tr>
+        <% } %>
+        <% } %>
+        </tbody>
+    </table>
 
-<h2>Computadoras Ensambladas</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Computadora</th>
-        <th>Usuario</th>
-        <th>Costo Ensamblaje</th>
-        <th>Fecha</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        EnsamblarComputadoraDAO ensamblarDAO = new EnsamblarComputadoraDAO();
-        List<EnsamblarComputadoraModelo> ensamblajes = ensamblarDAO.findAll();
-        for (EnsamblarComputadoraModelo ensamblaje : ensamblajes) {
-    %>
-    <tr>
-        <td><%= ensamblaje.getId() %></td>
-        <td><%= ensamblaje.getIdComputadora() %></td>
-        <td><%= ensamblaje.getIdUsuario() %></td>
-        <td><%= ensamblaje.getCostoEnsamble() %></td>
-        <td><%= ensamblaje.getFechaEnsamble() %></td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
+    <!-- Alerta de piezas agotadas -->
+    <h2 class="text-xl font-semibold mt-6 text-red-500">Piezas Agotadas o a Punto de Agotarse</h2>
+    <ul>
+        <% if (piezas != null) { %>
+        <% for (InventarioPiezaModelo pieza : piezas) { %>
+        <% if (pieza.getCantidad() <= 5) { %>
+        <li class="text-red-600">Pieza ID <%= pieza.getIdPieza() %> - Cantidad: <%= pieza.getCantidad() %></li>
+        <% } %>
+        <% } %>
+        <% } %>
+    </ul>
+</div>
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold mb-4">Crear Computadora</h2>
+    <form action="SvEnsamble" method="post" class="space-y-4">
+        <!-- Campos del formulario -->
+    </form>
+</div>
 
-<h2>Alertas de Inventario</h2>
-<ul>
-    <%
-        for (InventarioPiezaModelo pieza : piezas) {
-            if (pieza.getCantidad() == 0) {
-    %>
-    <li style="color: red;">La pieza con ID <%= pieza.getIdPieza() %> está agotada.</li>
-    <%
-    } else if (pieza.getCantidad() < 5) {
-    %>
-    <li style="color: orange;">La pieza con ID <%= pieza.getIdPieza() %> está a punto de agotarse (Stock: <%= pieza.getCantidad() %>).</li>
-    <%
-            }
-        }
-    %>
-</ul>
+<script>
+    function actualizarCosto() {
+        let selects = document.querySelectorAll("select[name^='pieza']");
+        let total = 0;
+        selects.forEach(select => {
+            let costo = select.options[select.selectedIndex].dataset.costo || 0;
+            total += parseFloat(costo);
+        });
+        document.getElementById("costoTotal").value = total;
+    }
+</script>
 </body>
 </html>

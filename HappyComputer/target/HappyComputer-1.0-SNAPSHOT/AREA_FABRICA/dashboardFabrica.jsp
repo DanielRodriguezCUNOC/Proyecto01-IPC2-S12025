@@ -1,89 +1,124 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.happycomputer.persistenciadatos.EnsamblarComputadoraDAO" %>
-<%@ page import="com.happycomputer.modelos.EnsamblarComputadoraModelo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.happycomputer.persistenciadatos.InventarioPiezaDAO" %>
+<%@ page import="com.happycomputer.persistenciadatos.InventarioComputadoraDAO" %>
+<%@ page import="com.happycomputer.modelos.InventarioPiezaModelo" %>
+<%@ page import="com.happycomputer.modelos.InventarioComputadoraModelo" %>
+<%@ page import="com.happycomputer.modelos.UsuarioModelo" %>
 <%@ page import="com.happycomputer.persistenciadatos.PiezaDAO" %>
-<%@ page import="com.happycomputer.modelos.PiezaModelo" %>
+<%@ page import="com.happycomputer.persistenciadatos.UsuarioDAO" %>
+<%@ page import="java.sql.SQLException" %>
+<%
+    PiezaDAO piezaDAO = new PiezaDAO();
+    InventarioPiezaDAO iPiezaDAO = new InventarioPiezaDAO();
+    InventarioComputadoraDAO computadoraDAO = new InventarioComputadoraDAO();
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+    List<InventarioPiezaModelo> piezas = null;
+    List<InventarioComputadoraModelo> computadoras = null;
+    List<UsuarioModelo> ensambladores = null;
+
+    try {
+        piezas = iPiezaDAO.findAll();
+        computadoras = computadoraDAO.findAll();
+        ensambladores = usuarioDAO.findByRol(1);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        out.println("Error al obtener datos: " + e.getMessage());
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Area Ensamblaje</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard Fábrica</title>
 </head>
 <body class="bg-gray-100 p-6">
+<div class="container mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Dashboard Área de Ensamblaje</h1>
 
-<h1 class="text-3xl font-bold mb-4 text-center">Area Ensamblaje</h1>
-
-<div class="container mx-auto bg-white shadow-md p-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Computadoras Ensambladas</h2>
-
-    <table class="w-full border-collapse border border-gray-300">
+    <!-- Tabla de Inventario de Piezas -->
+    <h2 class="text-xl font-semibold mt-4">Inventario de Piezas</h2>
+    <table class="w-full mt-2 border-collapse border border-gray-300">
         <thead>
         <tr class="bg-gray-200">
-            <th class="border p-2">ID Computadora</th>
-            <th class="border p-2">ID Usuario</th>
-            <th class="border p-2">Fecha</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            EnsamblarComputadoraDAO ensamblarDAO = new EnsamblarComputadoraDAO();
-            List<EnsamblarComputadoraModelo> ensamblajes = ensamblarDAO.findAll();
-            for (EnsamblarComputadoraModelo ensamblaje : ensamblajes) {
-        %>
-        <tr class="border">
-            <td class="border p-2"><%= ensamblaje.getIdComputadora() %></td>
-            <td class="border p-2"><%= ensamblaje.getIdUsuario() %></td>
-            <td class="border p-2"><%= ensamblaje.getFechaEnsamble() %></td>
-        </tr>
-        <% } %>
-        </tbody>
-    </table>
-
-    <h2 class="text-xl font-semibold mt-6">Agregar Ensamblaje</h2>
-    <form action="SvEnsamble" method="post" class="mt-4">
-        <input type="hidden" name="accion" value="agregarEnsamblaje">
-        <input type="text" name="idComputadora" placeholder="ID Computadora" required class="border p-2 mr-2">
-        <input type="text" name="idUsuario" placeholder="ID Usuario" required class="border p-2 mr-2">
-        <input type="date" name="fecha" required class="border p-2 mr-2">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Agregar</button>
-    </form>
-</div>
-
-<div class="container mx-auto bg-white shadow-md p-6 rounded-lg mt-6">
-    <h2 class="text-xl font-semibold mb-4">Gestión de Piezas</h2>
-    <table class="w-full border-collapse border border-gray-300">
-        <thead>
-        <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
             <th class="border p-2">ID Pieza</th>
-            <th class="border p-2">Nombre</th>
-            <th class="border p-2">Costo</th>
+            <th class="border p-2">Cantidad</th>
+            <th class="border p-2">Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <%
-            PiezaDAO piezaDAO = new PiezaDAO();
-            List<PiezaModelo> piezas = piezaDAO.findAll();
-            for (PiezaModelo pieza : piezas) {
-        %>
-        <tr class="border">
+        <% if (piezas != null) { %>
+        <% for (InventarioPiezaModelo pieza : piezas) { %>
+        <tr>
             <td class="border p-2"><%= pieza.getId() %></td>
-            <td class="border p-2"><%= pieza.getNombre() %></td>
-            <td class="border p-2">$<%= pieza.getCosto() %></td>
+            <td class="border p-2"><%= pieza.getIdPieza() %></td>
+            <td class="border p-2"><%= pieza.getCantidad() %></td>
+            <td class="border p-2">
+                <button class="bg-blue-500 text-white px-2 py-1 rounded">Editar</button>
+                <button class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
+            </td>
         </tr>
+        <% } %>
         <% } %>
         </tbody>
     </table>
 
-    <h2 class="text-xl font-semibold mt-6">Agregar Pieza</h2>
-    <form action="SvEnsamble" method="post" class="mt-4">
-        <input type="hidden" name="accion" value="agregarPieza">
-        <input type="text" name="nombre" placeholder="Nombre de Pieza" required class="border p-2 mr-2">
-        <input type="number" name="costo" step="0.01" placeholder="Costo" required class="border p-2 mr-2">
-        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Agregar</button>
+    <!-- Tabla de Computadoras Ensambladas -->
+    <h2 class="text-xl font-semibold mt-6">Computadoras Ensambladas</h2>
+    <table class="w-full mt-2 border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">ID Ensamblar Computadora</th>
+            <th class="border p-2">Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (computadoras != null) { %>
+        <% for (InventarioComputadoraModelo computadora : computadoras) { %>
+        <tr>
+            <td class="border p-2"><%= computadora.getId() %></td>
+            <td class="border p-2"><%= computadora.getIdEnsamblarComputadora() %></td>
+            <td class="border p-2"><%= computadora.getCantidad() %></td>
+        </tr>
+        <% } %>
+        <% } %>
+        </tbody>
+    </table>
+
+    <!-- Alerta de piezas agotadas -->
+    <h2 class="text-xl font-semibold mt-6 text-red-500">Piezas Agotadas o a Punto de Agotarse</h2>
+    <ul>
+        <% if (piezas != null) { %>
+        <% for (InventarioPiezaModelo pieza : piezas) { %>
+        <% if (pieza.getCantidad() <= 5) { %>
+        <li class="text-red-600">Pieza ID <%= pieza.getIdPieza() %> - Cantidad: <%= pieza.getCantidad() %></li>
+        <% } %>
+        <% } %>
+        <% } %>
+    </ul>
+</div>
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold mb-4">Crear Computadora</h2>
+    <form action="SvEnsamble" method="post" class="space-y-4">
+        <!-- Campos del formulario -->
     </form>
 </div>
 
+<script>
+    function actualizarCosto() {
+        let selects = document.querySelectorAll("select[name^='pieza']");
+        let total = 0;
+        selects.forEach(select => {
+            let costo = select.options[select.selectedIndex].dataset.costo || 0;
+            total += parseFloat(costo);
+        });
+        document.getElementById("costoTotal").value = total;
+    }
+</script>
 </body>
 </html>

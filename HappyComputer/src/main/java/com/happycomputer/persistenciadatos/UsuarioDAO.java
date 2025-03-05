@@ -115,4 +115,32 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
         return usuarios;
     }
 
+    // Buscar un usuario por el Rol
+    public List<UsuarioModelo> findByRol(Integer idRol) throws SQLException {
+        List<UsuarioModelo> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM Usuario WHERE id_rol = ?";
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
+            if (connect == null) {
+                throw new SQLException("No se pudo establecer la conexión a la base de datos");
+            }
+            ps.setInt(1, idRol);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String usuario = rs.getString("usuario");
+                    String password = rs.getString("password");
+                    int idRolDb = rs.getInt("id_rol");  // Asegúrate de que el nombre sea correcto
+                    boolean estado = rs.getBoolean("estado");
+
+                    usuarios.add(new UsuarioModelo(id, usuario, password, idRolDb, estado));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Imprime la traza de la excepción
+            throw new SQLException("Error al buscar usuarios por rol: " + e.getMessage());
+        }
+        return usuarios;
+    }
+
 }

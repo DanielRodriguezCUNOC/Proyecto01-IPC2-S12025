@@ -79,8 +79,10 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
                         rs.getInt("cantidad")
                 ));
             }
-            return inventarioPiezaModelos;
+        }catch(SQLException e){
+            e.printStackTrace();
         }
+        return inventarioPiezaModelos;
     }
 
     //Ordenar por cantidad
