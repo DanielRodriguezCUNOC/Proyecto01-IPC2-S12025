@@ -82,4 +82,23 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
             return inventarioPiezaModelos;
         }
     }
+
+    //Ordenar por cantidad
+    public List<InventarioPiezaModelo> orderBy(String order) throws SQLException {
+        List<InventarioPiezaModelo> iPMs = new ArrayList<>();
+        String sql = "SELECT * FROM inventario_pieza ORDER BY cantidad " + ("desc".equalsIgnoreCase(order) ? "DESC" : "ASC");
+        try(Connection con = ConectDB.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
+            while(rs.next()) {
+                iPMs.add(new InventarioPiezaModelo(
+                        rs.getInt("id"),
+                        rs.getInt("id_pieza"),
+                        rs.getInt("cantidad")
+                ));
+            }
+            return iPMs;
+
+        }
+    }
 }

@@ -88,4 +88,22 @@ public class InventarioComputadoraDAO extends CrudDAO<InventarioComputadoraModel
         }
         return inventarioComputadoraList;
     }
+
+    // Metodo para ordenar por cantidad
+    public List<InventarioComputadoraModelo> orderBy(String order) throws SQLException {
+        List<InventarioComputadoraModelo> iCMs = new ArrayList<>();
+        String sql = "SELECT * FROM Inventario_Computadora ORDER BY cantidad " + order;
+        try(Connection con = ConectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+            while(rs.next()) {
+                iCMs.add(new InventarioComputadoraModelo(
+                        rs.getInt("id"),
+                        rs.getInt("id_ensamblar_computadora"),
+                        rs.getInt("cantidad")
+                ));
+            }
+        }
+        return iCMs;
+    }
 }

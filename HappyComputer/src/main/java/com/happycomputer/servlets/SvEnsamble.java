@@ -2,6 +2,8 @@ package com.happycomputer.servlets;
 
 import com.happycomputer.modelos.EnsamblarComputadoraModelo;
 import com.happycomputer.persistenciadatos.EnsamblarComputadoraDAO;
+import com.happycomputer.persistenciadatos.InventarioComputadoraDAO;
+import com.happycomputer.persistenciadatos.InventarioPiezaDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,9 @@ import java.util.List;
 @WebServlet(name = "SvEnsamble", urlPatterns = {"/SvEnsamble"})
 public class SvEnsamble extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private EnsamblarComputadoraDAO eCDAO;
+    private EnsamblarComputadoraDAO eCDAO = new EnsamblarComputadoraDAO();
+    private InventarioPiezaDAO iPDAO = new InventarioPiezaDAO();
+    private InventarioComputadoraDAO iCDAO = new InventarioComputadoraDAO();
     @Override
     public void init() throws ServletException {
         eCDAO = new EnsamblarComputadoraDAO();
@@ -24,13 +28,42 @@ public class SvEnsamble extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
-            List<EnsamblarComputadoraModelo> ensambles = eCDAO.findAll();
-            request.setAttribute("ensambles", ensambles);
-            request.getRequestDispatcher("/AREA_FABRICA/dashboardFabrica.jsp").forward(request, response);
-        }catch (SQLException e){
-            throw new ServletException("Error al obtener las computadoras ensambladas",e);
+        String action = request.getParameter("action");
+        if(action == null) {
+            action = "list";
         }
+        switch (action){
+            case "list":
+               try{
+                   request.setAttribute("ensambles", eCDAO.findAll());
+                   request.setAttribute("InventarioPieza", iPDAO.findAll());
+                   request.setAttribute("InventarioComputadora", iCDAO.findAll());
+                   request.getRequestDispatcher("AREA_FABRICA/dashboardFabrica.jsp").forward(request, response);
+               }catch (SQLException e){
+                     throw new ServletException("Error al conectar a la base de datos",e);
+               }
+                break;
+            case "orderPiezas":
+                try{
+                    String orderPieza = request.getParameter("order");
+                    request.setAttribute("InventarioPieza", iPDAO.orderBy(orderPieza));
+                    request.getRequestDispatcher("AREA_FABRICA/dashboardFabrica.jsp").forward(request, response);
+                }catch (SQLException e){
+                    throw new ServletException("Error al conectar a la base de datos",e);
+                }
+                break;
+            case "orderComputadoras":
+                String orderC = request.getParameter("order");
+                try{
+                    request.setAttribute("InventarioComputadora", iCDAO.orderBy(orderC));
+                    request.getRequestDispatcher("AREA_FABRICA/dashboardFabrica.jsp").forward(request, response);
+                }catch (SQLException e){
+                    throw new ServletException("Error al conectar a la base de datos",e);
+                }
+                break;
+        }
+
+
     }
 
     @Override

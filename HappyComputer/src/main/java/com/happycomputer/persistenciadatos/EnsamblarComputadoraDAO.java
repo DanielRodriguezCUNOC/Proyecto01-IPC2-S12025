@@ -62,7 +62,7 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
                             rs.getInt("id"),
                             rs.getInt("id_computadora"),
                             rs.getInt("id_usuario"),
-                            rs.getInt("costo_ensamble"),
+                            rs.getDouble("costo_ensamble"),
                             rs.getDate("fecha_ensamble")
                     );
                 }
@@ -83,7 +83,7 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
                         rs.getInt("id"),
                         rs.getInt("id_computadora"),
                         rs.getInt("id_usuario"),
-                        rs.getInt("costo_ensamble"),
+                        rs.getDouble("costo_ensamble"),
                         rs.getDate("fecha_ensamble")
                 ));
             }
