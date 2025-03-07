@@ -89,4 +89,18 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
         }
         return computadoras;
     }
+    // Verificar si la computadora ya existe
+    public boolean findByNombre(String nombre) throws SQLException {
+        String sql = "SELECT * FROM Computadora WHERE nombre = ?";
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1)>0;
+                }
+            }
+        }
+        return false;
+    }
 }

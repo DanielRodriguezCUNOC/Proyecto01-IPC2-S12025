@@ -38,12 +38,12 @@ public class SvLogin extends HttpServlet {
                session.setAttribute("usuario", user);
                String urlRedirect = "index.jsp";
                if (user.getIdRol().equals(1)){
-                   response.sendRedirect("dashboardFabrica.jsp");
+                   response.sendRedirect("/AREA_FABRICA/dashboardFabrica.jsp");
                } else if (user.getIdRol().equals(2)) {
-                     response.sendRedirect("dashboardVentas.jsp");
+                     response.sendRedirect("/AREA_VENTAS/dashboardVentas.jsp");
 
                } else if (user.getIdRol().equals(3)) {
-                   response.sendRedirect("dashboardFinanciero.jsp");
+                   response.sendRedirect("/AREA_FINANCIERA/dashboardFinanciero.jsp");
                }
                 response.sendRedirect(urlRedirect);
 

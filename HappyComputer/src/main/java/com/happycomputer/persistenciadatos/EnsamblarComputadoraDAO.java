@@ -10,7 +10,7 @@ import java.util.List;
 public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo> {
     @Override
     public EnsamblarComputadoraModelo insert(EnsamblarComputadoraModelo entity) throws SQLException {
-        String sql = "INSERT INTO Ensamblar_Computadora (id_computadora, id_usuario, fecha_ensamble) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Ensamblar_Computadora (id_computadora, id_usuario, fecha_ensamblado, costo) VALUES (?, ?, ?, ?)";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, entity.getIdComputadora());
@@ -29,7 +29,7 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
 
     @Override
     public void update(EnsamblarComputadoraModelo entity) throws SQLException {
-        String sql = "UPDATE Ensamblar_Computadora SET id_computadora = ?, id_usuario = ?, fecha_ensamble = ? WHERE id = ?";
+        String sql = "UPDATE Ensamblar_Computadora SET id_computadora = ?, id_usuario = ?, fecha_ensamble = ?, costo = ? WHERE id = ?";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, entity.getIdComputadora());
@@ -62,8 +62,9 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
                             rs.getInt("id"),
                             rs.getInt("id_computadora"),
                             rs.getInt("id_usuario"),
-                            rs.getDouble("costo_ensamble"),
-                            rs.getDate("fecha_ensamble")
+                            rs.getDate("fecha_ensamblado"),
+                            rs.getDouble("costo_ensamble")
+
                     );
                 }
             }
@@ -83,11 +84,33 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
                         rs.getInt("id"),
                         rs.getInt("id_computadora"),
                         rs.getInt("id_usuario"),
-                        rs.getDouble("costo_ensamble"),
-                        rs.getDate("fecha_ensamble")
+                        rs.getDate("fecha_ensamblado"),
+                        rs.getDouble("costo_ensamble")
+
                 ));
             }
         }
         return listaEnsambles;
+    }
+
+    // Obtener las computadoras ensambladas por fecha
+    public List<EnsamblarComputadoraModelo> findByDate(String orden) throws SQLException{
+        List<EnsamblarComputadoraModelo> computadoras = new ArrayList<>();
+        String sql = "SELECT * FROM Ensamblar_Computadora ORDER BY fecha_ensamble " + orden;
+        try(Connection con = ConectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+            while(rs.next()) {
+                computadoras.add(new EnsamblarComputadoraModelo(
+                        rs.getInt("id"),
+                        rs.getInt("id_computadora"),
+                        rs.getInt("id_usuario"),
+                        rs.getDate("fecha_ensamblado"),
+                        rs.getDouble("costo_ensamble")
+
+                ));
+            }
+        }
+        return computadoras;
     }
 }

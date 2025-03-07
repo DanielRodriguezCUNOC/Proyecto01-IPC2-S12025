@@ -48,7 +48,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
 
     @Override
     public InventarioPiezaModelo findById(Integer id) throws SQLException {
-        String sql = "SELECT * FROM inventario_pieza WHERE id = ?";
+        String sql = "SELECT * FROM Inventario_Pieza WHERE id = ?";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -102,5 +102,21 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
             return iPMs;
 
         }
+    }
+    public InventarioPiezaModelo findByIdPieza(int idPieza) throws SQLException {
+        String sql = "SELECT * FROM Inventario_Pieza WHERE id_pieza = ?";
+        try (Connection con = ConectDB.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idPieza);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new InventarioPiezaModelo(
+                            rs.getInt("id"),
+                            rs.getInt("id_pieza"),
+                            rs.getInt("cantidad")
+                    );
+                }
+            }
+        }
+        return null;
     }
 }

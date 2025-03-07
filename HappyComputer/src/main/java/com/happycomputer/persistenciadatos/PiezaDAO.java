@@ -85,4 +85,18 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     return piezas;
     }
 
+    //Funcion para saber si una pieza ya existe en la tabla Pieza
+    public boolean existePieza(String nombre) throws SQLException {
+        String sql = "SELECT * COUNT(*) FROM Pieza WHERE nombre = ?";
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try(ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
 }
