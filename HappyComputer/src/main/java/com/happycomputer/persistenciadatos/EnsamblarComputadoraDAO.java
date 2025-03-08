@@ -16,6 +16,7 @@ public class EnsamblarComputadoraDAO extends CrudDAO<EnsamblarComputadoraModelo>
             ps.setInt(1, entity.getIdComputadora());
             ps.setInt(2, entity.getIdUsuario());
             ps.setDate(3, new java.sql.Date(entity.getFechaEnsamble().getTime()));
+            ps.setDouble(4, entity.getCostoEnsamble());
             ps.executeUpdate();
             try(ResultSet rs = ps.getGeneratedKeys()) {
                 if(rs.next()) {

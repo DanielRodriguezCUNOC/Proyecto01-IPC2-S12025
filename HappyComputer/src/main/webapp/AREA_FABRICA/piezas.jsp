@@ -5,12 +5,14 @@
 <head>
     <title>Piezas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/assemble.png">
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
     <!-- Boton para regresar al dashboard -->
     <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Regresar al Dashboard Ensamblaje</a>
-
+    <!-- Boton para regresar a agregar pieza -->
+    <a href="/HappyComputer_war/AREA_FABRICA/crearPieza.jsp" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Regresar a Agregar Pieza</a>
     <h1 class="text-2xl font-bold mb-4">Lista de Piezas</h1>
     <table class="min-w-full bg-white border">
         <thead>

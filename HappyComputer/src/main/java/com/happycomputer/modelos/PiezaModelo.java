@@ -4,6 +4,7 @@ public class PiezaModelo {
     private Integer id;
     private String nombre;
     private Double costo;
+    private boolean estado;
 
     public PiezaModelo() {
     }
@@ -38,5 +39,11 @@ public class PiezaModelo {
         this.costo = costo;
     }
 
+    public boolean isEstado() {
+        return estado;
+    }
 
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 }

@@ -3,12 +3,12 @@
 <head>
   <title>Dashboard Fábrica</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png">
+  <!-- Icono -->
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/assemble.png">
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4 text-center">Bienvenido al Área de Fábrica</h1>
+  <h1 class="text-2xl font-bold mb-4 text-center">Área de Ensamblaje</h1>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <!-- Ensamblar Computadora -->
     <div class="bg-white p-6 rounded shadow-md">
@@ -21,7 +21,7 @@
     <div class="bg-white p-6 rounded shadow-md">
       <h2 class="text-xl font-semibold mb-2">Información de Componentes</h2>
       <p class="text-gray-700 mb-4">Consulta y modifica la información de los componentes.</p>
-      <a href="/HappyComputer_war/AREA_FABRICA/piezas.jsp" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Componentes</a>
+      <a href="${pageContext.request.contextPath}/SvPieza" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Componentes</a>
     </div>
 
     <!-- Listar Computadoras Ensambladas -->
@@ -44,6 +44,12 @@
       <p class="text-gray-700 mb-4">Agrega un componente a la lista.</p>
       <a href="/HappyComputer_war/AREA_FABRICA/crearPieza.jsp" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Agregar Componente</a>
     </div>
+
+    <!-- Agregar mas piezas al inventario -->
+    <div class="bg-white p-6 rounded shadow-md">
+      <h2 class="text-xl font-semibold mb-2">Agregar Piezas al Inventario</h2>
+      <p class="text-gray-700 mb-4">Agrega más cantidad de una pieza ya existente al inventario.</p>
+      <a href="/HappyComputer_war/AREA_FABRICA/agregarPiezaInventario.jsp" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Agregar Piezas al Inventario</a>
   </div>
 </div>
 </body>

@@ -77,12 +77,15 @@ public class SvEnsamblaje extends HttpServlet {
             //* Crear la computadora en la tabla Computadora
             ComputadoraModelo computadora = new ComputadoraModelo(null, nombreComputadora, precioVenta);
             computadoraDAO.insert(computadora);
+            System.out.println("Computadora: " + computadora.getId());
             //* Crear la computadora ensamblada en la tabla Ensamblar_Computadora
             EnsamblarComputadoraModelo ensamblarComputadora = new EnsamblarComputadoraModelo(null, computadora.getId(), idUsuario, new Date(), costoEnsamble);
             ensamblarComputadoraDAO.insert(ensamblarComputadora);
+            System.out.println("Computadora ensamblada: " + ensamblarComputadora.getId());
             //* Registrar la computadora en el inventario
             InventarioComputadoraModelo inventarioComputadora = new InventarioComputadoraModelo(null, ensamblarComputadora.getId(), 1);
             inventarioComputadoraDAO.insert(inventarioComputadora);
+            System.out.println("Inventario computadora: " + inventarioComputadora.getId());
             for (int i = 0; i < piezasIds.length; i++) {
                 EnsamblePiezaModelo ensamblePieza = new EnsamblePiezaModelo(null, computadora.getId(), Integer.parseInt(piezasIds[i]), Integer.parseInt(cantidades[i]));
                 ensamblePiezaDAO.insert(ensamblePieza);

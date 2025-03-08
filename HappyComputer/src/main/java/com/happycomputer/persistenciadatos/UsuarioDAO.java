@@ -32,7 +32,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
 
     @Override
     public void update(UsuarioModelo entity) throws SQLException {
-        String sql = "UPDATE usuario SET usuario = ?, password = ?, estado = ?, id_rol = ? WHERE id = ?";
+        String sql = "UPDATE Usuario SET usuario = ?, password = ?, estado = ?, id_rol = ? WHERE id = ?";
         try(Connection connect = ConectDB.getConnection();
             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, entity.getUsuario());
@@ -46,7 +46,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
 
     @Override
     public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM usuario WHERE id = ?";
+        String sql = "DELETE FROM Usuario WHERE id = ?";
         try(Connection connect = ConectDB.getConnection();
             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setLong(1, id);
@@ -56,7 +56,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
 
     @Override
     public UsuarioModelo findById(Integer id) throws SQLException{
-        String sql = "SELECT * FROM usuario WHERE id = ?";
+        String sql = "SELECT * FROM Usuario WHERE id = ?";
         try(Connection connect = ConectDB.getConnection();
             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -76,7 +76,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     }
 
     public UsuarioModelo findByUsuario (String username) throws SQLException {
-        String sql = "SELECT * FROM usuario WHERE username = ?";
+        String sql = "SELECT * FROM Usuario WHERE usuario = ?";
         try(Connection connect = ConectDB.getConnection();
             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, username);
@@ -86,7 +86,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
                         rs.getInt("id"),
                         rs.getString("usuario"),
                         rs.getString("password"),
-                        rs.getInt("idRol"),
+                        rs.getInt("id_rol"),
                         rs.getBoolean("estado")
                     );
                 }
@@ -98,7 +98,7 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     @Override
     public List<UsuarioModelo> findAll() throws SQLException {
         List<UsuarioModelo> usuarios = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios";
+        String sql = "SELECT * FROM Usuario";
         try(Connection connect = ConectDB.getConnection();
         PreparedStatement ps = connect.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {

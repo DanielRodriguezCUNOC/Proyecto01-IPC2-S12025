@@ -8,7 +8,7 @@
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
   <!-- Botón para volver al listado de piezas -->
-  <a href="${pageContext.request.contextPath}/SvPieza" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver a Piezas</a>
+  <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
 
   <h1 class="text-2xl font-bold mb-4">Crear Nueva Pieza</h1>
   <form action="${pageContext.request.contextPath}/SvPieza" method="post" class="bg-white p-6 rounded shadow-md">
@@ -44,8 +44,11 @@
 
     const nombre = document.getElementById('nombre').value;
 
+    //Codificar el nombre de la pieza para enviarlo en la URL
+    const nombreCodificado = encodeURIComponent(nombre);
+
     // Verificar si la pieza ya existe
-    fetch(`${pageContext.request.contextPath}/SvPieza?action=verificar&nombre=${encodeURIComponent(nombre)}`)
+    fetch(`${pageContext.request.contextPath}/SvPieza?action=verificar&nombre=${nombreCodificado}`)
             .then(response => response.json())
             .then(data => {
               if (data.existe) {

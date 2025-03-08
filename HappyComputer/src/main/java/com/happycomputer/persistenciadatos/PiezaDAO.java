@@ -74,6 +74,7 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
         String sql = "SELECT * FROM Pieza";
         try(Connection connect = ConectDB.getConnection();
             PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            System.out.println("Conexión a la base de datos establecida: " + (connect != null));
             while(rs.next()) {
                 piezas.add(new PiezaModelo(
                     rs.getInt("id"),
@@ -97,6 +98,36 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
             }
         }
         return false;
+    }
+
+    //Verificar que la tabla esta vacia
+    public boolean isEmpty() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Pieza";
+        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if(rs.next()) {
+                return rs.getInt(1) == 0;
+            }
+        }
+        return false;
+    }
+    // Metodo para resetear el valor autoincremental
+    public void resetAutoIncrement() throws SQLException {
+        String sql = "ALTER TABLE Pieza AUTO_INCREMENT = 1"; // Para MySQL
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.executeUpdate(sql);
+        }
+    }
+
+    // Metodo para cambiar el estado de una pieza
+    public void cambiarEstado(Integer id, boolean estado) throws SQLException {
+        String sql = "UPDATE Pieza SET estado = ? WHERE id = ?";
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBoolean(1, estado);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        }
     }
 
 }

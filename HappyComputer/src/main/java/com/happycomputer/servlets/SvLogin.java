@@ -38,18 +38,17 @@ public class SvLogin extends HttpServlet {
                session.setAttribute("usuario", user);
                String urlRedirect = "index.jsp";
                if (user.getIdRol().equals(1)){
-                   response.sendRedirect("/AREA_FABRICA/dashboardFabrica.jsp");
+                   response.sendRedirect(request.getContextPath()+"/AREA_FABRICA/dashboardFabrica.jsp");
                } else if (user.getIdRol().equals(2)) {
-                     response.sendRedirect("/AREA_VENTAS/dashboardVentas.jsp");
+                     response.sendRedirect(request.getContextPath()+"/AREA_VENTAS/dashboardVentas.jsp");
 
                } else if (user.getIdRol().equals(3)) {
-                   response.sendRedirect("/AREA_FINANCIERA/dashboardFinanciero.jsp");
+                   response.sendRedirect(request.getContextPath()+"/AREA_FINANCIERA/dashboardFinanciero.jsp");
                }
-                response.sendRedirect(urlRedirect);
-
             }else {
                 request.setAttribute("error", "usuario o password incorretos");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath()+"/index.jsp?error=1");
+                //request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }catch (Exception e){
             e.printStackTrace();

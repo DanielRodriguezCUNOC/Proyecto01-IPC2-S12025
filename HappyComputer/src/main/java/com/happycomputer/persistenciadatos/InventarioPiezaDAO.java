@@ -14,7 +14,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
 
     @Override
     public InventarioPiezaModelo insert(InventarioPiezaModelo entity) throws SQLException {
-        String sql = "INSERT INTO inventario_pieza (id_pieza, cantidad) VALUES (?, ?)";
+        String sql = "INSERT INTO Inventario_Pieza (id_pieza, cantidad) VALUES (?, ?)";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, entity.getIdPieza());
@@ -26,7 +26,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
 
     @Override
     public void update(InventarioPiezaModelo entity) throws SQLException {
-        String sql = "UPDATE inventario_pieza SET id_pieza = ?, cantidad = ? WHERE id = ?";
+        String sql = "UPDATE Inventario_Pieza SET id_pieza = ?, cantidad = ? WHERE id = ?";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, entity.getIdPieza());
@@ -38,7 +38,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
 
     @Override
     public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM inventario_pieza WHERE id = ?";
+        String sql = "DELETE FROM Inventario_Pieza WHERE id = ?";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -68,7 +68,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
     @Override
     public List<InventarioPiezaModelo> findAll() throws SQLException {
         List<InventarioPiezaModelo> inventarioPiezaModelos = new ArrayList<>();
-        String sql = "SELECT * FROM inventario_pieza";
+        String sql = "SELECT * FROM Inventario_Pieza";
         try(Connection con = ConectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()) {
@@ -88,7 +88,7 @@ public class InventarioPiezaDAO extends CrudDAO<InventarioPiezaModelo>{
     //Ordenar por cantidad
     public List<InventarioPiezaModelo> orderBy(String order) throws SQLException {
         List<InventarioPiezaModelo> iPMs = new ArrayList<>();
-        String sql = "SELECT * FROM inventario_pieza ORDER BY cantidad " + ("desc".equalsIgnoreCase(order) ? "DESC" : "ASC");
+        String sql = "SELECT * FROM Inventario_Pieza ORDER BY cantidad " + ("desc".equalsIgnoreCase(order) ? "DESC" : "ASC");
         try(Connection con = ConectDB.getConnection();
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
