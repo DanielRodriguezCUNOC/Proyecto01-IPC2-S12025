@@ -4,6 +4,8 @@
 <head>
     <title>Ensamblar Computadora</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
@@ -11,14 +13,14 @@
     <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
 
     <h1 class="text-2xl font-bold mb-4">Ensamblar Computadora</h1>
-    <form action="${pageContext.request.contextPath}/SvEnsamblaje" method="post" class="bg-white p-6 rounded shadow-md">
+    <form action="${pageContext.request.contextPath}/SvCrearComputadora" method="post" class="bg-white p-6 rounded shadow-md" onsubmit="return validateForm()">
         <div class="mb-4">
             <label for="nombreComputadora" class="block text-gray-700">Nombre de la Computadora</label>
-            <input type="text" id="nombreComputadora" name="nombreComputadora" class="w-full px-4 py-2 border rounded">
+            <input type="text" id="nombreComputadora" name="nombreComputadora" class="w-full px-4 py-2 border rounded" required>
         </div>
         <div class="mb-4">
             <label for="precioVenta" class="block text-gray-700">Precio de Venta</label>
-            <input type="number" id="precioVenta" name="precioVenta" step="0.01" class="w-full px-4 py-2 border rounded">
+            <input type="number" id="precioVenta" name="precioVenta" step="0.01" class="w-full px-4 py-2 border rounded" required>
         </div>
         <div class="mb-4">
             <h2 class="text-xl font-semibold mb-2">Seleccionar Piezas</h2>
@@ -33,5 +35,20 @@
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Ensamblar Computadora</button>
     </form>
 </div>
+<script>
+    function validateForm() {
+        const piezas = document.querySelectorAll('input[name="piezas"]:checked');
+        if (piezas.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Selecciona al menos una pieza',
+                confirmButtonColor: "#3085d6"
+            });
+            return false;
+        }
+        return true;
+    }
+</script>
 </body>
 </html>

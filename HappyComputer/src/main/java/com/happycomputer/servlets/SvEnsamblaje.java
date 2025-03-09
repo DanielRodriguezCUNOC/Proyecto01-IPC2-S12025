@@ -21,6 +21,7 @@ public class SvEnsamblaje extends HttpServlet {
     private PiezaDAO piezaDAO;
     private EnsamblarComputadoraDAO ensamblarComputadoraDAO;
     private InventarioComputadoraDAO inventarioComputadoraDAO;
+    private InventarioPiezaDAO inventarioPiezaDAO;
 
     @Override
     public void init() {
@@ -29,21 +30,11 @@ public class SvEnsamblaje extends HttpServlet {
         piezaDAO = new PiezaDAO();
         ensamblarComputadoraDAO = new EnsamblarComputadoraDAO();
         inventarioComputadoraDAO = new InventarioComputadoraDAO();
+        inventarioPiezaDAO = new InventarioPiezaDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String action = request.getParameter("action");
-    if("ensamblar".equals(action)) {
-
-        try{
-            List<PiezaModelo> piezas = piezaDAO.findAll();
-            request.setAttribute("piezas", piezas);
-            request.getRequestDispatcher("/AREA_FABRICA/ensamblarComputadora.jsp").forward(request, response);
-        }catch (SQLException e) {
-            throw new ServletException("Error al obtener las piezas", e);
-        }
-    }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,43 +46,65 @@ public class SvEnsamblaje extends HttpServlet {
             return;
         }
         int idUsuario = usuario.getId();
+       int idComputadora = Integer.parseInt(request.getParameter("idComputadora"));
 
-        String nombreComputadora = request.getParameter("nombreComputadora");
-        double precioVenta = Double.parseDouble(request.getParameter("precioVenta"));
-        String[] piezasIds = request.getParameterValues("piezas");
-        String[] cantidades = request.getParameterValues("cantidades");
 
         try{
-            if(computadoraDAO.findByNombre(nombreComputadora)){
-                request.setAttribute("error", "Ya existe una computadora con ese nombre");
-                request.getRequestDispatcher("/AREA_FABRICA/ensamblarComputadora.jsp").forward(request, response);
+            ComputadoraModelo computadoraModelo = computadoraDAO.findById(idComputadora);
+            if(computadoraModelo == null) {
+                request.setAttribute("error", "El computadora no existe");
+                request.getRequestDispatcher("/AREA_FABRICA/seleccionarComputadora.jsp").forward(request, response);
                 return;
             }
-            //* Calcular el costo de la computadora
-            double costoEnsamble = 0.0;
-            for (int i = 0; i < piezasIds.length; i++) {
-                PiezaModelo pieza = piezaDAO.findById(Integer.parseInt(piezasIds[i]));
-                costoEnsamble += pieza.getCosto() * Integer.parseInt(cantidades[i]);
+            List<EnsamblePiezaModelo> piezasNecesarias = ensamblePiezaDAO.findByComputadora(idComputadora);
+
+            //* Verificamos que hayan suficientes piezas en el inventario
+            for (EnsamblePiezaModelo ensamblePieza : piezasNecesarias) {
+                try {
+                    InventarioPiezaModelo inventarioPieza = inventarioPiezaDAO.findByIdPieza(ensamblePieza.getIdPieza());
+                    if (inventarioPieza == null || inventarioPieza.getCantidad() < ensamblePieza.getCantidad()) {
+                        // Obtener el nombre de la pieza usando PiezaDAO
+                        PiezaModelo pieza = piezaDAO.findById(ensamblePieza.getIdPieza());
+                        String nombrePieza = (pieza != null) ? pieza.getNombre() : "Pieza Desconocida";
+
+                        request.setAttribute("error", "No hay suficientes piezas en el inventario para " + nombrePieza);
+                        request.getRequestDispatcher("/AREA_FABRICA/seleccionarPiezas.jsp").forward(request, response);
+                        return;
+                    }
+                }catch (SQLException e){
+                    throw new ServletException("Error al obtener el inventario de piezas", e);
+                }
             }
-            //* Crear la computadora en la tabla Computadora
-            ComputadoraModelo computadora = new ComputadoraModelo(null, nombreComputadora, precioVenta);
-            computadoraDAO.insert(computadora);
-            System.out.println("Computadora: " + computadora.getId());
+
+            // Reducir la cantidad de piezas en el inventario
+            for (EnsamblePiezaModelo ensamblePieza : piezasNecesarias) {
+                InventarioPiezaModelo inventarioPieza = inventarioPiezaDAO.findByIdPieza(ensamblePieza.getIdPieza());
+                int nuevaCantidad = inventarioPieza.getCantidad() - ensamblePieza.getCantidad();
+                inventarioPieza.setCantidad(nuevaCantidad);
+                inventarioPiezaDAO.update(inventarioPieza);
+            }
+
             //* Crear la computadora ensamblada en la tabla Ensamblar_Computadora
-            EnsamblarComputadoraModelo ensamblarComputadora = new EnsamblarComputadoraModelo(null, computadora.getId(), idUsuario, new Date(), costoEnsamble);
+            double costoEnsamble = calcularCostoEnsamble(piezasNecesarias);
+            EnsamblarComputadoraModelo ensamblarComputadora = new EnsamblarComputadoraModelo(null, idComputadora, idUsuario, new Date(), costoEnsamble);
             ensamblarComputadoraDAO.insert(ensamblarComputadora);
             System.out.println("Computadora ensamblada: " + ensamblarComputadora.getId());
             //* Registrar la computadora en el inventario
             InventarioComputadoraModelo inventarioComputadora = new InventarioComputadoraModelo(null, ensamblarComputadora.getId(), 1);
             inventarioComputadoraDAO.insert(inventarioComputadora);
             System.out.println("Inventario computadora: " + inventarioComputadora.getId());
-            for (int i = 0; i < piezasIds.length; i++) {
-                EnsamblePiezaModelo ensamblePieza = new EnsamblePiezaModelo(null, computadora.getId(), Integer.parseInt(piezasIds[i]), Integer.parseInt(cantidades[i]));
-                ensamblePiezaDAO.insert(ensamblePieza);
-            }
-            response.sendRedirect(request.getContextPath()+"/ensamblarComputadora.jsp");
+            response.sendRedirect(request.getContextPath()+"/listarComputadoras.jsp");
         }catch (SQLException e){
             throw new ServletException("Error al insertar la computadora", e);
         }
+    }
+
+    private double calcularCostoEnsamble(List<EnsamblePiezaModelo> piezasNecesarias) throws SQLException {
+        double costoEnsamble = 0.0;
+        for (EnsamblePiezaModelo ensamblePieza : piezasNecesarias) {
+            PiezaModelo pieza = piezaDAO.findById(ensamblePieza.getIdPieza());
+            costoEnsamble += pieza.getCosto() * ensamblePieza.getCantidad();
+        }
+        return costoEnsamble;
     }
 }

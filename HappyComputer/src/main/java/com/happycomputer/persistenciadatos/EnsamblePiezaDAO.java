@@ -93,4 +93,23 @@ public class EnsamblePiezaDAO extends CrudDAO<EnsamblePiezaModelo>{
         }
         return ensamblajes;
     }
+    // Funcion para obtener las piezas necesarias para ensamblar una computadora por id
+    public List<EnsamblePiezaModelo> findByComputadora(int idComputadora) throws SQLException {
+        List<EnsamblePiezaModelo> ensamblajes = new ArrayList<>();
+        String sql = "SELECT * FROM Ensamble_Pieza WHERE id_computadora = ?";
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, idComputadora);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    EnsamblePiezaModelo ePM = new EnsamblePiezaModelo();
+                    ePM.setIdComputadora(rs.getInt("id_computadora"));
+                    ePM.setIdPieza(rs.getInt("id_pieza"));
+                    ePM.setCantidad(rs.getInt("cantidad"));
+                    ensamblajes.add(ePM);
+                }
+            }
+        }
+        return ensamblajes;
+    }
 }

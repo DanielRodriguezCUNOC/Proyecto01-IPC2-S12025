@@ -14,7 +14,7 @@
     <div class="bg-white p-6 rounded shadow-md">
       <h2 class="text-xl font-semibold mb-2">Ensamblar Computadora</h2>
       <p class="text-gray-700 mb-4">Crea una nueva computadora ensamblada.</p>
-      <a href="${pageContext.request.contextPath}/SvEnsamblaje?action=ensamblar" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Ensamblar Computadora</a>
+      <a href="${pageContext.request.contextPath}/SvSeleccionarComputadora" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Ensamblar Computadora</a>
     </div>
 
     <!-- Información de Componentes -->
