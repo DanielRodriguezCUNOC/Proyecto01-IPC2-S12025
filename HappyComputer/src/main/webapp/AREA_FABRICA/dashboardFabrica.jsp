@@ -14,7 +14,7 @@
     <div class="bg-white p-6 rounded shadow-md">
       <h2 class="text-xl font-semibold mb-2">Ensamblar Computadora</h2>
       <p class="text-gray-700 mb-4">Crea una nueva computadora ensamblada.</p>
-      <a href="${pageContext.request.contextPath}/SvPieza?origen=ensamblar" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Ensamblar Computadora</a>
+      <a href="${pageContext.request.contextPath}/SvEnsamblaje?action=ensamblar" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Ensamblar Computadora</a>
     </div>
 
     <!-- Información de Componentes -->
@@ -28,14 +28,14 @@
     <div class="bg-white p-6 rounded shadow-md">
       <h2 class="text-xl font-semibold mb-2">Listar Computadoras</h2>
       <p class="text-gray-700 mb-4">Consulta las computadoras ensambladas.</p>
-      <a href="/HappyComputer_war/AREA_FABRICA/listarComputadoras.jsp" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Listar Computadoras</a>
+      <a href="${pageContext.request.contextPath}/SvInventarioComputadora?action" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Listar Computadoras</a>
     </div>
 
     <!-- Componentes Agotados -->
     <div class="bg-white p-6 rounded shadow-md">
       <h2 class="text-xl font-semibold mb-2">Componentes Agotados</h2>
       <p class="text-gray-700 mb-4">Consulta los componentes agotados o con stock bajo.</p>
-      <a href="/HappyComputer_war/AREA_FABRICA/componentesAgotados.jsp" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Componentes Agotados</a>
+      <a href="${pageContext.request.contextPath}/SvInventarioPieza?ordenar" class="bg-blue-500 text-white px-4 py-2 rounded block w-full text-center break-words">Componentes Agotados</a>
     </div>
 
     <!-- Crear Componente -->

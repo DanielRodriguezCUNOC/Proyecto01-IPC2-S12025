@@ -28,7 +28,7 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
                 }
             }
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -103,4 +103,6 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
         }
         return false;
     }
+
+
 }

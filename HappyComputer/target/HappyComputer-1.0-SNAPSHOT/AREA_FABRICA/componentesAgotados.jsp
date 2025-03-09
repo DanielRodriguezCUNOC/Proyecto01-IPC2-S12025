@@ -9,8 +9,8 @@
 <div class="container mx-auto p-4">
   <h1 class="text-2xl font-bold mb-4">Componentes Agotados o a Punto de Agotarse</h1>
   <div class="mb-4">
-    <a href="/SvInventarioPieza?orden=ASC" class="bg-blue-500 text-white px-4 py-2 rounded">Ordenar Ascendente</a>
-    <a href="/SvInventarioPieza?orden=DESC" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Ordenar Descendente</a>
+    <a href="/SvInventarioPieza?action=ordenar&orden=ASC" class="bg-blue-500 text-white px-4 py-2 rounded">Ordenar Ascendente</a>
+    <a href="/SvInventarioPieza?action=ordenar&orden=DESC" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Ordenar Descendente</a>
   </div>
   <table class="min-w-full bg-white border">
     <thead>

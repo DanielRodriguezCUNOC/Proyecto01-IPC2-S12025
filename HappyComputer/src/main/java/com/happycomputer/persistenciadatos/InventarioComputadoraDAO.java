@@ -3,10 +3,7 @@ package com.happycomputer.persistenciadatos;
 import com.happycomputer.modelos.InventarioComputadoraModelo;
 import com.happycomputer.util.ConectDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class InventarioComputadoraDAO extends CrudDAO<InventarioComputadoraModel
     public InventarioComputadoraModelo insert(InventarioComputadoraModelo entity) throws SQLException {
         String sql = "INSERT INTO Inventario_Computadora (id_ensamblar_computadora, cantidad) VALUES (?, ?)";
         try(Connection con = ConectDB.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, entity.getIdEnsamblarComputadora());
             ps.setInt(2, entity.getCantidad());
             int affectedRows = ps.executeUpdate();
@@ -106,4 +103,6 @@ public class InventarioComputadoraDAO extends CrudDAO<InventarioComputadoraModel
         }
         return iCMs;
     }
+
+
 }

@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
-  <!-- Botón para volver al listado de piezas -->
+  <!-- Botón para volver al Dashboard -->
   <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
 
   <h1 class="text-2xl font-bold mb-4">Crear Nueva Pieza</h1>

@@ -24,7 +24,7 @@ public class SvInventarioPieza  extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        String action = request.getParameter("action");
-       if("agotadas".equals(action)){
+       if("ordenar".equals(action)){
            String orden = request.getParameter("orden");
            if(orden != null){
                orden = "ASC";

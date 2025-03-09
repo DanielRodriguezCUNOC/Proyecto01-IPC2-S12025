@@ -33,29 +33,28 @@ public class SvEnsamblaje extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String orden = request.getParameter("orden");
-        if (orden == null) {
-            orden = "ASC";
+    String action = request.getParameter("action");
+    if("ensamblar".equals(action)) {
+
+        try{
+            List<PiezaModelo> piezas = piezaDAO.findAll();
+            request.setAttribute("piezas", piezas);
+            request.getRequestDispatcher("/AREA_FABRICA/ensamblarComputadora.jsp").forward(request, response);
+        }catch (SQLException e) {
+            throw new ServletException("Error al obtener las piezas", e);
         }
-        try {
-            List<EnsamblarComputadoraModelo> computadoras = ensamblarComputadoraDAO.findByDate(orden);
-            request.setAttribute("computadoras", computadoras);
-            request.getRequestDispatcher("/AREA_FABRICA/listarComputadoras.jsp").forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException("Error al obtener las computadoras ensambladas", e);
-        }
+    }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        //* Obtener al usuario de la sesion
         HttpSession session = request.getSession();
         UsuarioModelo usuario = (UsuarioModelo) session.getAttribute("usuario");
-       /* if (usuario == null || usuario.getIdRol() != 1) {
+       if (usuario == null || usuario.getIdRol() != 1) {
             response.sendRedirect("login.jsp");
             return;
-        }*/
-        //int idUsuario = usuario.getId();
-        int idUsuario = 1;
+        }
+        int idUsuario = usuario.getId();
 
         String nombreComputadora = request.getParameter("nombreComputadora");
         double precioVenta = Double.parseDouble(request.getParameter("precioVenta"));
@@ -90,7 +89,7 @@ public class SvEnsamblaje extends HttpServlet {
                 EnsamblePiezaModelo ensamblePieza = new EnsamblePiezaModelo(null, computadora.getId(), Integer.parseInt(piezasIds[i]), Integer.parseInt(cantidades[i]));
                 ensamblePiezaDAO.insert(ensamblePieza);
             }
-            response.sendRedirect("SvEnsamblaje");
+            response.sendRedirect(request.getContextPath()+"/ensamblarComputadora.jsp");
         }catch (SQLException e){
             throw new ServletException("Error al insertar la computadora", e);
         }

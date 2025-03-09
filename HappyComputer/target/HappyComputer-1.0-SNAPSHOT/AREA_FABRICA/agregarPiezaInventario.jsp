@@ -11,10 +11,10 @@
     <!-- Boton para regresar al dashboard -->
     <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Regresar al Dashboard Ensamblaje</a>
     <!-- Botón para volver al listado de piezas -->
-    <a href="${pageContext.request.contextPath}/SvPieza" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver a Piezas</a>
+    <a href="${pageContext.request.contextPath}/SvPieza" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver a Piezas</a>
 
     <h1 class="text-2xl font-bold mb-4">Agregar Pieza al Inventario</h1>
-    <form action="${pageContext.request.contextPath}/SvPieza" method="post" class="bg-white p-6 rounded shadow-md">
+    <form action="${pageContext.request.contextPath}/SvInventarioPieza" method="post" class="bg-white p-6 rounded shadow-md">
         <!-- Campo oculto para indicar la acción "agregarInventario" -->
         <input type="hidden" name="action" value="agregarInventario">
 
@@ -22,8 +22,9 @@
         <div class="mb-4">
             <label for="idPieza" class="block text-gray-700">Pieza</label>
             <select id="idPieza" name="idPieza" class="w-full px-4 py-2 border rounded" required>
-                <c:forEach var="pieza" items="${piezas}">
-                    <option value="${pieza.id}">${pieza.nombre}</option>
+                <c:forEach var="inventarioPieza" items="${inventarioPiezas}">
+                    <option value="${inventarioPieza.id}">${inventarioPieza.nombre} (Cantidad :
+                        ${inventarioPieza.cantidad})</option>
                 </c:forEach>
             </select>
         </div>
