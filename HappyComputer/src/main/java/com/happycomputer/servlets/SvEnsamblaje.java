@@ -48,7 +48,6 @@ public class SvEnsamblaje extends HttpServlet {
         int idUsuario = usuario.getId();
        int idComputadora = Integer.parseInt(request.getParameter("idComputadora"));
 
-
         try{
             ComputadoraModelo computadoraModelo = computadoraDAO.findById(idComputadora);
             if(computadoraModelo == null) {

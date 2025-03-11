@@ -15,16 +15,16 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     @Override
     public PiezaModelo insert(PiezaModelo entity) throws SQLException {
         String sql = "INSERT INTO Pieza (nombre, costo) VALUES (?, ?)";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, entity.getNombre());
             ps.setDouble(2, entity.getCosto());
             int affectedRows = ps.executeUpdate();
-            if(affectedRows > 0) {
-               try(ResultSet generatedKeys = ps.getGeneratedKeys();){
-                     if (generatedKeys.next()) {
-                          entity.setId(generatedKeys.getInt(1));
-                     }
-               }
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys();) {
+                    if (generatedKeys.next()) {
+                        entity.setId(generatedKeys.getInt(1));
+                    }
+                }
             }
 
         }
@@ -34,7 +34,7 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     @Override
     public void update(PiezaModelo entity) throws SQLException {
         String sql = "UPDATE Pieza SET nombre = ?, costo = ? WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, entity.getNombre());
             ps.setDouble(2, entity.getCosto());
             ps.setInt(3, entity.getId());
@@ -45,22 +45,23 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     @Override
     public void delete(Integer id) throws SQLException {
         String sql = "DELETE FROM Pieza WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
+
     @Override
     public PiezaModelo findById(Integer id) throws SQLException {
-      String sql = "SELECT * FROM Pieza WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+        String sql = "SELECT * FROM Pieza WHERE id = ?";
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
-                   return new PiezaModelo(
-                    rs.getInt("id"),
-                    rs.getString("nombre"),
-                    rs.getDouble("costo")
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new PiezaModelo(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getDouble("costo")
                     );
                 }
             }
@@ -72,27 +73,26 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     public List<PiezaModelo> findAll() throws SQLException {
         List<PiezaModelo> piezas = new ArrayList<>();
         String sql = "SELECT * FROM Pieza";
-        try(Connection connect = ConectDB.getConnection();
-            PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            System.out.println("Conexión a la base de datos establecida: " + (connect != null));
-            while(rs.next()) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
                 piezas.add(new PiezaModelo(
-                    rs.getInt("id"),
-                    rs.getString("nombre"),
-                    rs.getDouble("costo")
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getDouble("costo")
                 ));
             }
         }
-    return piezas;
+        return piezas;
     }
 
     //Funcion para saber si una pieza ya existe en la tabla Pieza
     public boolean existePieza(String nombre) throws SQLException {
         String sql = "SELECT * COUNT(*) FROM Pieza WHERE nombre = ?";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, nombre);
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     return rs.getInt(1) > 0;
                 }
             }
@@ -103,13 +103,14 @@ public class PiezaDAO extends CrudDAO<PiezaModelo> {
     //Verificar que la tabla esta vacia
     public boolean isEmpty() throws SQLException {
         String sql = "SELECT COUNT(*) FROM Pieza";
-        try(Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            if(rs.next()) {
+        try (Connection connect = ConectDB.getConnection(); PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
                 return rs.getInt(1) == 0;
             }
         }
         return false;
     }
+
     // Metodo para resetear el valor autoincremental
     public void resetAutoIncrement() throws SQLException {
         String sql = "ALTER TABLE Pieza AUTO_INCREMENT = 1"; // Para MySQL

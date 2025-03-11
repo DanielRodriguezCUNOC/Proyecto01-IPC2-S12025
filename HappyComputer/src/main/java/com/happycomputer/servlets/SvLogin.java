@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author luluwalilith
  */
 @WebServlet(name = "SvLogin", urlPatterns = {"/SvLogin"})
@@ -30,27 +29,26 @@ public class SvLogin extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
 
-        try{
+        try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             UsuarioModelo user = usuarioDAO.findByUsuario(usuario);
-            if(user != null && user.getPassword().equals(password)){
-               HttpSession session = request.getSession();
-               session.setAttribute("usuario", user);
-               String urlRedirect = "index.jsp";
-               if (user.getIdRol().equals(1)){
-                   response.sendRedirect(request.getContextPath()+"/AREA_FABRICA/dashboardFabrica.jsp");
-               } else if (user.getIdRol().equals(2)) {
-                     response.sendRedirect(request.getContextPath()+"/AREA_VENTAS/dashboardVentas.jsp");
+            if (user != null && user.getPassword().equals(password)) {
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", user);
+                String urlRedirect = "index.jsp";
+                if (user.getIdRol().equals(1)) {
+                    response.sendRedirect(request.getContextPath() + "/AREA_FABRICA/dashboardFabrica.jsp");
+                } else if (user.getIdRol().equals(2)) {
+                    response.sendRedirect(request.getContextPath() + "/AREA_VENTAS/dashboardVentas.jsp");
 
-               } else if (user.getIdRol().equals(3)) {
-                   response.sendRedirect(request.getContextPath()+"/AREA_FINANCIERA/dashboardFinanciero.jsp");
-               }
-            }else {
+                } else if (user.getIdRol().equals(3)) {
+                    response.sendRedirect(request.getContextPath() + "/AREA_FINANCIERA/dashboardAdministracion.jsp");
+                }
+            } else {
                 request.setAttribute("error", "usuario o password incorretos");
-                response.sendRedirect(request.getContextPath()+"/index.jsp?error=1");
-                //request.getRequestDispatcher("index.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/index.jsp?error=1");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

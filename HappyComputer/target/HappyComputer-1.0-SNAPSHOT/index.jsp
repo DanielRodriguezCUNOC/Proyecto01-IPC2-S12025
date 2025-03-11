@@ -1,8 +1,4 @@
-<%-- 
-    Document   : index
-    Created on : Feb 28, 2025, 9:45:55 PM
-    Author     : luluwalilith
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
