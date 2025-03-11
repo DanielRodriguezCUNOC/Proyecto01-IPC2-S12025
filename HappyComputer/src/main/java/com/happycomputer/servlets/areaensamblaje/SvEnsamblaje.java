@@ -1,4 +1,4 @@
-package com.happycomputer.servlets;
+package com.happycomputer.servlets.areaensamblaje;
 
 import com.happycomputer.modelos.*;
 import com.happycomputer.persistenciadatos.*;
@@ -36,21 +36,22 @@ public class SvEnsamblaje extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       //* Obtener al usuario de la sesion
+        //* Obtener al usuario de la sesion
         HttpSession session = request.getSession();
         UsuarioModelo usuario = (UsuarioModelo) session.getAttribute("usuario");
-       if (usuario == null || usuario.getIdRol() != 1) {
+        if (usuario == null || usuario.getIdRol() != 1) {
             response.sendRedirect("login.jsp");
             return;
         }
         int idUsuario = usuario.getId();
-       int idComputadora = Integer.parseInt(request.getParameter("idComputadora"));
+        int idComputadora = Integer.parseInt(request.getParameter("idComputadora"));
 
-        try{
+        try {
             ComputadoraModelo computadoraModelo = computadoraDAO.findById(idComputadora);
-            if(computadoraModelo == null) {
+            if (computadoraModelo == null) {
                 request.setAttribute("error", "El computadora no existe");
                 request.getRequestDispatcher("/AREA_FABRICA/seleccionarComputadora.jsp").forward(request, response);
                 return;
@@ -70,7 +71,7 @@ public class SvEnsamblaje extends HttpServlet {
                         request.getRequestDispatcher("/AREA_FABRICA/seleccionarPiezas.jsp").forward(request, response);
                         return;
                     }
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     throw new ServletException("Error al obtener el inventario de piezas", e);
                 }
             }
@@ -92,8 +93,8 @@ public class SvEnsamblaje extends HttpServlet {
             InventarioComputadoraModelo inventarioComputadora = new InventarioComputadoraModelo(null, ensamblarComputadora.getId(), 1);
             inventarioComputadoraDAO.insert(inventarioComputadora);
             System.out.println("Inventario computadora: " + inventarioComputadora.getId());
-            response.sendRedirect(request.getContextPath()+"/listarComputadoras.jsp");
-        }catch (SQLException e){
+            response.sendRedirect(request.getContextPath() + "/listarComputadoras.jsp");
+        } catch (SQLException e) {
             throw new ServletException("Error al insertar la computadora", e);
         }
     }

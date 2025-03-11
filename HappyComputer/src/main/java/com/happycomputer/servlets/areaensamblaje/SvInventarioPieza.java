@@ -1,4 +1,4 @@
-package com.happycomputer.servlets;
+package com.happycomputer.servlets.areaensamblaje;
 
 import com.happycomputer.modelos.InventarioPiezaModelo;
 import com.happycomputer.modelos.PiezaModelo;

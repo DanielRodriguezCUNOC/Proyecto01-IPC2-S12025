@@ -1,9 +1,7 @@
-package com.happycomputer.servlets;
+package com.happycomputer.servlets.areaensamblaje;
 
 import com.happycomputer.modelos.EnsamblarComputadoraModelo;
-import com.happycomputer.persistenciadatos.ComputadoraDAO;
 import com.happycomputer.persistenciadatos.EnsamblarComputadoraDAO;
-import com.happycomputer.persistenciadatos.InventarioComputadoraDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +15,7 @@ import java.util.List;
 @WebServlet("/SvInventarioComputadora")
 public class SvInventarioComputadora extends HttpServlet {
     private EnsamblarComputadoraDAO ensamblarComputadoraDAO;
+
     @Override
     public void init() {
         ensamblarComputadoraDAO = new EnsamblarComputadoraDAO();
@@ -26,7 +25,7 @@ public class SvInventarioComputadora extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if(action == null || action.isEmpty()) {
+        if (action == null || action.isEmpty()) {
             try {
                 List<EnsamblarComputadoraModelo> computadoras = ensamblarComputadoraDAO.findAll();
                 request.setAttribute("computadoras", computadoras);
@@ -34,7 +33,7 @@ public class SvInventarioComputadora extends HttpServlet {
             } catch (SQLException e) {
                 throw new ServletException("Error al obtener las computadoras ensambladas", e);
             }
-        }else if ("ordenar".equals(action)) {
+        } else if ("ordenar".equals(action)) {
             String orden = request.getParameter("orden");
             if (orden != null) {
                 orden = "ASC";
@@ -46,7 +45,7 @@ public class SvInventarioComputadora extends HttpServlet {
             } catch (SQLException e) {
                 throw new ServletException("Error al obtener las computadoras agotadas", e);
             }
-        }else{
+        } else {
             response.sendRedirect(request.getContextPath() + "/SvInventarioComputadora");
         }
     }

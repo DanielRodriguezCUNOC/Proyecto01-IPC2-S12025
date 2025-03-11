@@ -1,4 +1,4 @@
-package com.happycomputer.servlets;
+package com.happycomputer.servlets.areaventas;
 
 import com.happycomputer.modelos.ComputadoraModelo;
 import com.happycomputer.modelos.EnsamblePiezaModelo;
@@ -23,14 +23,16 @@ public class SvCrearComputadora extends HttpServlet {
     private PiezaDAO piezaDAO;
     private EnsamblarComputadoraDAO ensamblarComputadoraDAO;
     private InventarioComputadoraDAO inventarioComputadoraDAO;
+
     @Override
-    public void  init(){
+    public void init() {
         computadoraDAO = new ComputadoraDAO();
         ensamblePiezaDAO = new EnsamblePiezaDAO();
         piezaDAO = new PiezaDAO();
         ensamblarComputadoraDAO = new EnsamblarComputadoraDAO();
         inventarioComputadoraDAO = new InventarioComputadoraDAO();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Obtener la lista de piezas disponibles
@@ -49,9 +51,9 @@ public class SvCrearComputadora extends HttpServlet {
         HttpSession session = request.getSession();
         UsuarioModelo usuario = (UsuarioModelo) session.getAttribute("usuario");
         if (usuario == null || usuario.getIdRol() != 3) {
-             response.sendRedirect("login.jsp");
-             return;
-         }
+            response.sendRedirect("login.jsp");
+            return;
+        }
         int idUsuario = usuario.getId();
 
         String nombreComputadora = request.getParameter("nombreComputadora");
@@ -59,8 +61,8 @@ public class SvCrearComputadora extends HttpServlet {
         String[] piezasIds = request.getParameterValues("piezas");
         String[] cantidades = request.getParameterValues("cantidades");
 
-        try{
-            if(computadoraDAO.findByNombre(nombreComputadora)){
+        try {
+            if (computadoraDAO.findByNombre(nombreComputadora)) {
                 request.setAttribute("error", "Ya existe una computadora con ese nombre");
                 request.getRequestDispatcher("/AREA_FABRICA/ensamblarComputadora.jsp").forward(request, response);
                 return;
@@ -84,7 +86,7 @@ public class SvCrearComputadora extends HttpServlet {
 
 
             response.sendRedirect("SvEnsamblaje");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new ServletException("Error al insertar la computadora", e);
         }
     }

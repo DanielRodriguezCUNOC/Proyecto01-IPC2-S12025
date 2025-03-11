@@ -7,19 +7,19 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
+public class UsuarioDAO extends CrudDAO<UsuarioModelo> {
     @Override
     public UsuarioModelo insert(UsuarioModelo entity) throws SQLException {
         String sql = "INSERT INTO Usuario (usuario, password, id_rol) VALUES (?, ?, ?)";
-        try(Connection con = ConectDB.getConnection();
-        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, entity.getUsuario());
             ps.setString(2, entity.getPassword());
             ps.setInt(3, entity.getIdRol());
 
             int affectedRows = ps.executeUpdate();
-            if(affectedRows > 0 ){
-                try(ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         entity.setId(generatedKeys.getInt(1));
                     }
@@ -33,8 +33,8 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     @Override
     public void update(UsuarioModelo entity) throws SQLException {
         String sql = "UPDATE Usuario SET usuario = ?, password = ?, estado = ?, id_rol = ? WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection();
-            PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, entity.getUsuario());
             ps.setString(2, entity.getPassword());
             ps.setInt(3, entity.getId());
@@ -47,27 +47,27 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     @Override
     public void delete(Integer id) throws SQLException {
         String sql = "DELETE FROM Usuario WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection();
-            PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         }
     }
 
     @Override
-    public UsuarioModelo findById(Integer id) throws SQLException{
+    public UsuarioModelo findById(Integer id) throws SQLException {
         String sql = "SELECT * FROM Usuario WHERE id = ?";
-        try(Connection connect = ConectDB.getConnection();
-            PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     return new UsuarioModelo(
-                        rs.getInt("id"),
-                        rs.getString("usuario"),
-                        rs.getString("password"),
-                        rs.getInt("idRol"),
-                        rs.getBoolean("estado")
+                            rs.getInt("id"),
+                            rs.getString("usuario"),
+                            rs.getString("password"),
+                            rs.getInt("idRol"),
+                            rs.getBoolean("estado")
                     );
                 }
             }
@@ -75,19 +75,19 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
         return null;
     }
 
-    public UsuarioModelo findByUsuario (String username) throws SQLException {
+    public UsuarioModelo findByUsuario(String username) throws SQLException {
         String sql = "SELECT * FROM Usuario WHERE usuario = ?";
-        try(Connection connect = ConectDB.getConnection();
-            PreparedStatement ps = connect.prepareStatement(sql)) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, username);
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     return new UsuarioModelo(
-                        rs.getInt("id"),
-                        rs.getString("usuario"),
-                        rs.getString("password"),
-                        rs.getInt("id_rol"),
-                        rs.getBoolean("estado")
+                            rs.getInt("id"),
+                            rs.getString("usuario"),
+                            rs.getString("password"),
+                            rs.getInt("id_rol"),
+                            rs.getBoolean("estado")
                     );
                 }
             }
@@ -99,17 +99,17 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
     public List<UsuarioModelo> findAll() throws SQLException {
         List<UsuarioModelo> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM Usuario";
-        try(Connection connect = ConectDB.getConnection();
-        PreparedStatement ps = connect.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()) {
+        try (Connection connect = ConectDB.getConnection();
+             PreparedStatement ps = connect.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-              usuarios.add(new UsuarioModelo(
-                rs.getInt("id"),
-                rs.getString("usuario"),
-                rs.getString("password"),
-                rs.getInt("idRol"),
-                rs.getBoolean("estado")
-              ));
+                usuarios.add(new UsuarioModelo(
+                        rs.getInt("id"),
+                        rs.getString("usuario"),
+                        rs.getString("password"),
+                        rs.getInt("idRol"),
+                        rs.getBoolean("estado")
+                ));
             }
         }
         return usuarios;
@@ -132,7 +132,6 @@ public class UsuarioDAO extends CrudDAO<UsuarioModelo>{
                     String password = rs.getString("password");
                     int idRolDb = rs.getInt("id_rol");  // Asegúrate de que el nombre sea correcto
                     boolean estado = rs.getBoolean("estado");
-
                     usuarios.add(new UsuarioModelo(id, usuario, password, idRolDb, estado));
                 }
             }

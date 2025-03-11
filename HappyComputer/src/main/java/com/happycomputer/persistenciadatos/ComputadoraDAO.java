@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
+public class ComputadoraDAO extends CrudDAO<ComputadoraModelo> {
 
     @Override
     public ComputadoraModelo insert(ComputadoraModelo entity) throws SQLException {
@@ -89,6 +89,7 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
         }
         return computadoras;
     }
+
     // Verificar si la computadora ya existe
     public boolean findByNombre(String nombre) throws SQLException {
         String sql = "SELECT * FROM Computadora WHERE nombre = ?";
@@ -97,14 +98,14 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo>{
             ps.setString(1, nombre);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1)>0;
+                    return rs.getInt(1) > 0;
                 }
             }
         }
         return false;
     }
 
-// Funcion para obtener todas las computadoras disponibles
+    // Funcion para obtener todas las computadoras disponibles
     public List<ComputadoraModelo> findByEstado(boolean estado) throws SQLException {
         List<ComputadoraModelo> computadoras = new ArrayList<>();
         String sql = "SELECT * FROM Computadora WHERE estado = ?";

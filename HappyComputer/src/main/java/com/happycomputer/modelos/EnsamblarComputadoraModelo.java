@@ -12,7 +12,7 @@ public class EnsamblarComputadoraModelo {
     public EnsamblarComputadoraModelo() {
     }
 
-    public EnsamblarComputadoraModelo(Integer id, Integer idComputadora, Integer idUsuario,Date fechaEnsamble, Double costoEnsamble ) {
+    public EnsamblarComputadoraModelo(Integer id, Integer idComputadora, Integer idUsuario, Date fechaEnsamble, Double costoEnsamble) {
         this.id = id;
         this.idComputadora = idComputadora;
         this.idUsuario = idUsuario;

@@ -1,4 +1,4 @@
-package com.happycomputer.servlets;
+package com.happycomputer.servlets.areaensamblaje;
 
 import com.happycomputer.modelos.InventarioPiezaModelo;
 import com.happycomputer.modelos.PiezaModelo;
@@ -50,7 +50,7 @@ public class SvPieza extends HttpServlet {
             try {
                 List<PiezaModelo> piezas = piezaDAO.findAll();
                 request.setAttribute("piezas", piezas);
-                request.getRequestDispatcher("/AREA_FABRICA/piezas.jsp").forward(request, response);
+                request.getRequestDispatcher("/AREA_FABRICA/Piezas.jsp").forward(request, response);
             } catch (SQLException e) {
                 throw new ServletException("Error al obtener las piezas", e);
             }
@@ -93,6 +93,6 @@ public class SvPieza extends HttpServlet {
                 throw new ServletException("Error al actualizar la pieza", e);
             }
         }
-        response.sendRedirect(request.getContextPath() + "/SvPieza");
+        response.sendRedirect(request.getContextPath() + "/AREA_FABRICA/Piezas.jsp");
     }
 }
