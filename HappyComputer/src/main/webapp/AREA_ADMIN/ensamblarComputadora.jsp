@@ -3,24 +3,28 @@
 <html>
 <head>
     <title>Ensamblar Computadora</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
     <!-- Botón para volver al Dashboard -->
-    <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
+    <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp"
+       class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
 
     <h1 class="text-2xl font-bold mb-4">Ensamblar Computadora</h1>
-    <form action="${pageContext.request.contextPath}/SvCrearComputadora" method="post" class="bg-white p-6 rounded shadow-md" onsubmit="return validateForm()">
+    <form action="${pageContext.request.contextPath}/SvCrearComputadora" method="post"
+          class="bg-white p-6 rounded shadow-md" onsubmit="return validateForm()">
         <div class="mb-4">
             <label for="nombreComputadora" class="block text-gray-700">Nombre de la Computadora</label>
-            <input type="text" id="nombreComputadora" name="nombreComputadora" class="w-full px-4 py-2 border rounded" required>
+            <input type="text" id="nombreComputadora" name="nombreComputadora" class="w-full px-4 py-2 border rounded"
+                   required>
         </div>
         <div class="mb-4">
             <label for="precioVenta" class="block text-gray-700">Precio de Venta</label>
-            <input type="number" id="precioVenta" name="precioVenta" step="0.01" class="w-full px-4 py-2 border rounded" required>
+            <input type="number" id="precioVenta" name="precioVenta" step="0.01" class="w-full px-4 py-2 border rounded"
+                   required>
         </div>
         <div class="mb-4">
             <h2 class="text-xl font-semibold mb-2">Seleccionar Piezas</h2>
