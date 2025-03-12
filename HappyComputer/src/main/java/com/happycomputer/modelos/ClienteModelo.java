@@ -5,8 +5,6 @@ public class ClienteModelo {
     private String nombre;
     private String nit;
     private String direccion;
-    private String telefono;
-    private String correo;
 
     public ClienteModelo() {
     }

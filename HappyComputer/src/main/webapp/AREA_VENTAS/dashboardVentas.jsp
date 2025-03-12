@@ -17,15 +17,15 @@
         </div>
 
         <div class="bg-green-500 text-white p-4 rounded-lg shadow-lg text-center">
-            <h2 class="text-lg font-semibold">Consultar Ventas</h2>
-            <p class="text-sm mb-2">Revisa el historial de ventas realizadas.</p>
-            <a href="/HappyComputer_war/AREA_VENTAS/consultaVentas.jsp" class="underline">Ver Ventas</a>
+            <h2 class="text-lg font-semibold">Consultar Compras</h2>
+            <p class="text-sm mb-2">Revisa el historial de compras realizadas por un cliente.</p>
+            <a href="/HappyComputer_war/AREA_VENTAS/consultaCompras.jsp" class="underline">Ver Ventas</a>
         </div>
 
         <div class="bg-red-500 text-white p-4 rounded-lg shadow-lg text-center">
             <h2 class="text-lg font-semibold">Consultar Devoluciones</h2>
             <p class="text-sm mb-2">Consulta las devoluciones de productos realizadas.</p>
-            <a href="/HappyComputer_war/AREA_VENTAS/consultaDevoluciones.jsp" class="underline">Ver Devoluciones</a>
+            <a href="/HappyComputer_war/AREA_VENTAS/consultarDevoluciones.jsp" class="underline">Ver Devoluciones</a>
         </div>
 
         <div class="bg-yellow-500 text-white p-4 rounded-lg shadow-lg text-center">
@@ -37,13 +37,13 @@
         <div class="bg-purple-500 text-white p-4 rounded-lg shadow-lg text-center">
             <h2 class="text-lg font-semibold">Detalle de Factura</h2>
             <p class="text-sm mb-2">Revisa los detalles de una factura específica.</p>
-            <a href="/HappyComputer_war/AREA_VENTAS/detalleFactura.jsp" class="underline">Ver Factura</a>
+            <a href="${pageContext.request.contextPath}/SvFactura?action=listarVentas" class="underline">Ver Factura</a>
         </div>
 
         <div class="bg-pink-500 text-white p-4 rounded-lg shadow-lg text-center">
             <h2 class="text-lg font-semibold">Ventas del Día</h2>
             <p class="text-sm mb-2">Consulta el resumen de las ventas realizadas hoy.</p>
-            <a href="/HappyComputer_war/AREA_VENTAS/ventasDelDia.jsp" class="underline">Ver Reporte</a>
+            <a href="${pageContext.request.contextPath}/SvVenta?action=ventaDelDia" class="underline">Ver Reporte</a>
         </div>
     </div>
 </div>

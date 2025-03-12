@@ -1,12 +1,9 @@
 package com.happycomputer.servlets.areaventas;
 
-import com.happycomputer.modelos.ClienteModelo;
-import com.happycomputer.modelos.ComputadoraModelo;
-import com.happycomputer.modelos.DetalleVentaModelo;
-import com.happycomputer.modelos.VentaModelo;
-import com.happycomputer.persistenciadatos.ClienteDAO;
-import com.happycomputer.persistenciadatos.DetalleVentaDAO;
-import com.happycomputer.persistenciadatos.VentaDAO;
+import com.happycomputer.dto.DetalleComputadoraDTO;
+import com.happycomputer.dto.VentaDTO;
+import com.happycomputer.modelos.*;
+import com.happycomputer.persistenciadatos.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,22 +13,47 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet("/SvVenta")
 public class SvVenta extends HttpServlet {
     private VentaDAO ventaDAO;
     private ClienteDAO clienteDAO;
     private DetalleVentaDAO detalleVentaDAO;
+    private InventarioComputadoraDAO inventarioComputadoraDAO;
+    private ComputadoraDAO computadoraDAO;
 
     @Override
     public void init() {
         ventaDAO = new VentaDAO();
         clienteDAO = new ClienteDAO();
         detalleVentaDAO = new DetalleVentaDAO();
+        inventarioComputadoraDAO = new InventarioComputadoraDAO();
+        computadoraDAO = new ComputadoraDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("ventaDelDia".equals(action)) {
+            try {
+                List<VentaDTO> ventas = ventaDAO.findSalesByDate();
+                request.setAttribute("ventas", ventas);
+                request.getRequestDispatcher("/AREA_VENTAS/ventasDelDia.jsp").forward(request, response);
+            } catch (Exception e) {
+                throw new ServletException("Error al obtener las ventas", e);
+            }
+        } else {
+            try {
+                //Obtener las computadoras disponibles
+                List<DetalleComputadoraDTO> computadoras = inventarioComputadoraDAO.getByNameAndPrice();
+                //Enviar las computadoras a la vista
+                request.setAttribute("computadoras", computadoras);
+                request.getRequestDispatcher("/AREA_VENTAS/Venta.jsp").forward(request, response);
+            } catch (SQLException e) {
+                throw new ServletException("Error al obtener las computadoras", e);
+            }
+        }
     }
 
     @Override

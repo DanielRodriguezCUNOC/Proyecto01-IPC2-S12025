@@ -1,5 +1,6 @@
 package com.happycomputer.servlets.areaventas;
 
+import com.happycomputer.dto.DetalleComputadoraDTO;
 import com.happycomputer.modelos.ComputadoraModelo;
 import com.happycomputer.modelos.InventarioComputadoraModelo;
 import com.happycomputer.persistenciadatos.ComputadoraDAO;
@@ -29,9 +30,7 @@ public class SvComputadoraDisponible extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // Obtener la lista de computadoras disponibles (estado = 1)
-            List<InventarioComputadoraModelo> computadorasInventario = inventarioComputadoraDAO.findByCantidadGreaterThanZero();
-            List<ComputadoraModelo> computadoras = computadoraDAO.findByEstado(true);
-            request.setAttribute("computadorasInventario", computadorasInventario);
+            List<DetalleComputadoraDTO> computadoras = inventarioComputadoraDAO.getByNameAndPrice();
             request.setAttribute("computadoras", computadoras);
 
             // Redirigir al JSP para seleccionar una computadora

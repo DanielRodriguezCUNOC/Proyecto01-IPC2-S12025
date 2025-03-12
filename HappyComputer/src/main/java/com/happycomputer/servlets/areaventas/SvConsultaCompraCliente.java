@@ -1,5 +1,6 @@
 package com.happycomputer.servlets.areaventas;
 
+import com.happycomputer.dto.DetalleCompraClienteDTO;
 import com.happycomputer.modelos.VentaModelo;
 import com.happycomputer.persistenciadatos.VentaDAO;
 
@@ -28,9 +29,9 @@ public class SvConsultaCompraCliente extends HttpServlet {
         String fechaFin = request.getParameter("fechaFin");
 
         try {
-            List<VentaModelo> ventas = ventaDAO.findByNitAndDate(nit, fechaInicio, fechaFin);
-            request.setAttribute("ventas", ventas);
-            request.getRequestDispatcher("/AREA_VENTAS/consultaCompraCliente.jsp").forward(request, response);
+            List<DetalleCompraClienteDTO> compras = ventaDAO.findComprasConNombreUsuario(nit, fechaInicio, fechaFin);
+            request.setAttribute("compras", compras);
+            request.getRequestDispatcher("/AREA_VENTAS/listarCompras.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error al obtener las computadoras", e);
         }

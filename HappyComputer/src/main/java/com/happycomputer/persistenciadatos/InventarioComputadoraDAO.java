@@ -1,5 +1,6 @@
 package com.happycomputer.persistenciadatos;
 
+import com.happycomputer.dto.DetalleComputadoraDTO;
 import com.happycomputer.modelos.InventarioComputadoraModelo;
 import com.happycomputer.util.ConectDB;
 
@@ -120,6 +121,29 @@ public class InventarioComputadoraDAO extends CrudDAO<InventarioComputadoraModel
             }
         }
         return iCMs;
+    }
+
+    // Funcion para obtener las computadoras con su nombre y precio
+    public List<DetalleComputadoraDTO> getByNameAndPrice() throws SQLException {
+        List<DetalleComputadoraDTO> computadoras = new ArrayList<>();
+        String sql = "SELECT c.nombre, c.precio_venta " +
+                "FROM Inventario_Computadora ic " +
+                "JOIN Ensamblar_Computadora ec ON ic.id_ensamblar_computadora = ec.id " +
+                "JOIN Computadora c ON ec.id_computadora = c.id " +
+                "WHERE ic.cantidad > 0"; // Solo computadoras con cantidad disponible
+
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                DetalleComputadoraDTO detalle = new DetalleComputadoraDTO();
+                detalle.setNombre(rs.getString("nombre"));
+                detalle.setPrecioVenta(rs.getDouble("precio_venta"));
+                computadoras.add(detalle);
+            }
+        }
+        return computadoras;
     }
 
 }

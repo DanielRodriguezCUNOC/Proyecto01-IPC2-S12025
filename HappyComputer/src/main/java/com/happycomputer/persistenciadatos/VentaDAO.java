@@ -1,5 +1,8 @@
 package com.happycomputer.persistenciadatos;
 
+import com.happycomputer.dto.DetalleCompraClienteDTO;
+import com.happycomputer.dto.DetalleVentaDTO;
+import com.happycomputer.dto.VentaDTO;
 import com.happycomputer.modelos.ComputadoraModelo;
 import com.happycomputer.modelos.VentaModelo;
 import com.happycomputer.util.ConectDB;
@@ -97,4 +100,63 @@ public class VentaDAO extends CrudDAO<VentaModelo> {
         }
         return ventas;
     }
+
+    //Funcion para obtener las ventas del dia con el nombre del vendedor
+    public List<VentaDTO> findSalesByDate() throws SQLException {
+        List<VentaDTO> ventas = new ArrayList<>();
+        String sql = "SELECT v.id, u.usuario, v.id_cliente, v.total, v.fecha " +
+                "FROM Venta v " +
+                "INNER JOIN Usuario u ON v.id_usuario = u.id " +
+                "WHERE v.fecha = CURRENT_DATE";
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                VentaDTO venta = new VentaDTO(
+                        rs.getInt("id"),
+                        rs.getString("usuario"),
+                        rs.getString("id_cliente"),
+                        rs.getDouble("total"),
+                        rs.getDate("fecha")
+                );
+                ventas.add(venta);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al obtener las ventas", e);
+        }
+        return ventas;
+    }
+
+
+    // Obtenemos las ventas de un cliente por su nit y el nombre del vendedor
+    public List<DetalleCompraClienteDTO> findComprasConNombreUsuario(String idCliente, String fechaInicio, String fechaFin) throws SQLException {
+        List<DetalleCompraClienteDTO> compras = new ArrayList<>();
+        String sql = "SELECT c.id, c.id_cliente, c.total, c.fecha, u.usuario " +
+                "FROM Venta c " +
+                "INNER JOIN Usuario u ON c.id_usuario = u.id " +
+                "WHERE c.id_cliente = ? AND c.fecha BETWEEN ? AND ?";
+
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, idCliente);
+            ps.setString(2, fechaInicio);
+            ps.setString(3, fechaFin);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                DetalleCompraClienteDTO compra = new DetalleCompraClienteDTO(
+                        rs.getInt("id"),
+                        rs.getString("id_cliente"),
+                        rs.getDouble("total"),
+                        rs.getDate("fecha"),
+                        rs.getString("usuario")  // Nombre del usuario
+                );
+                compras.add(compra);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al obtener las compras", e);
+        }
+        return compras;
+    }
+
 }
