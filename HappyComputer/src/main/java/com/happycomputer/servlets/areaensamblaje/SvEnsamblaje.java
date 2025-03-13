@@ -64,8 +64,12 @@ public class SvEnsamblaje extends HttpServlet {
                         PiezaModelo pieza = piezaDAO.findById(ensamblePieza.getIdPieza());
                         String nombrePieza = (pieza != null) ? pieza.getNombre() : "Pieza Desconocida";
 
+                        //Almacenamos el mensaje de error en la sesion
+                        HttpSession sessionError = request.getSession();
+                        sessionError.setAttribute("error", "No hay suficientes piezas en el inventario para " + computadoraModelo.getNombre());
+
                         request.setAttribute("error", "No hay suficientes piezas en el inventario para " + nombrePieza);
-                        request.getRequestDispatcher("/AREA_FABRICA/.jsp").forward(request, response);
+                        request.getRequestDispatcher("/AREA_FABRICA/piezasEnsambleComputadora.jsp").forward(request, response);
                         return;
                     }
                 } catch (SQLException e) {
