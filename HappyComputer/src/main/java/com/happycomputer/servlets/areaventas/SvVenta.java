@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -64,8 +65,10 @@ public class SvVenta extends HttpServlet {
         try {
             ClienteModelo cliente = clienteDAO.findByNit(nit);
             if (cliente == null) {
-                request.setAttribute("error", "El cliente no existe");
-                request.getRequestDispatcher("/AREA_VENTAS/registrarCliente.jsp").forward(request, response);
+                //Almacenamos el error
+                HttpSession sessionError = request.getSession();
+                sessionError.setAttribute("error", "El cliente no existe");
+                response.sendRedirect(request.getContextPath() + "/AREA_VENTAS/Venta.jsp");
                 return;
             }
             VentaModelo ventaModelo = new VentaModelo(
@@ -96,7 +99,8 @@ public class SvVenta extends HttpServlet {
     private double calcularTotal(String[] computadoras) throws SQLException {
         double total = 0;
         for (String idComputadora : computadoras) {
-            ComputadoraModelo computadora = ventaDAO.findComputadoraById(Integer.parseInt(idComputadora));
+            ComputadoraDAO computadoraDAO = new ComputadoraDAO();
+            ComputadoraModelo computadora = computadoraDAO.findComputadoraByName(idComputadora);
             total += computadora.getPrecioVenta();
         }
 

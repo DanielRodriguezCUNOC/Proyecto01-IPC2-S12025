@@ -28,7 +28,7 @@ public class SvRegistrarCliente extends HttpServlet {
         String direccion = request.getParameter("direccion");
         try {
             clienteDAO.insert(new ClienteModelo(nit, nombre, direccion));
-            response.sendRedirect(request.getContextPath() + "/SvVenta");
+            response.sendRedirect(request.getContextPath() + "/SvVenta?action");
         } catch (SQLException e) {
             throw new ServletException("Error al registrar el cliente", e);
         }

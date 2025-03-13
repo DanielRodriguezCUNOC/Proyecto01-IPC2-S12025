@@ -3,20 +3,37 @@ package com.happycomputer.persistenciadatos;
 import com.happycomputer.modelos.ClienteModelo;
 import com.happycomputer.util.ConectDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
-public class ClienteDAO extends CrudDAO {
+public class ClienteDAO extends CrudDAO<ClienteModelo> {
     @Override
-    public Object insert(Object entity) throws SQLException {
-        return null;
+    public ClienteModelo insert(ClienteModelo entity) throws SQLException {
+        String sql = "INSERT INTO Cliente (nombre, nit, direccion) VALUES (?, ?, ?)";
+        try (Connection conn = ConectDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, entity.getNombre());
+            ps.setString(2, entity.getNit());
+            ps.setString(3, entity.getDireccion());
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        entity.setId(generatedKeys.getInt(1));
+                    }
+                }
+            }
+        }
+
+        return entity;
     }
 
+
     @Override
-    public void update(Object entity) throws SQLException {
+    public void update(ClienteModelo entity) throws SQLException {
 
     }
 
@@ -26,7 +43,7 @@ public class ClienteDAO extends CrudDAO {
     }
 
     @Override
-    public Object findById(Integer id) throws SQLException {
+    public ClienteModelo findById(Integer id) throws SQLException {
         return null;
     }
 
@@ -37,7 +54,7 @@ public class ClienteDAO extends CrudDAO {
 
     // Hallar al cliente por su numero de NIT
     public ClienteModelo findByNit(String nit) throws SQLException {
-        String sql = "select * from ClienteModelo where nit = ?";
+        String sql = "SELECT * FROM Cliente WHERE nit = ?";
         try (Connection con = ConectDB.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nit);

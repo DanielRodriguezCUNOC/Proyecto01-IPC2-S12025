@@ -9,7 +9,8 @@
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Registrar Cliente</h1>
-    <form action="/SvRegistrarCliente" method="post" class="bg-white p-6 rounded-lg shadow-lg">
+    <form action="${pageContext.request.contextPath}/SvRegistrarCliente" method="post"
+          class="bg-white p-6 rounded-lg shadow-lg">
         <div class="mb-4">
             <label for="nit" class="block text-gray-700">NIT:</label>
             <input type="text" id="nit" name="nit" class="w-full p-2 border border-gray-300 rounded-lg" required>

@@ -159,4 +159,5 @@ public class VentaDAO extends CrudDAO<VentaModelo> {
         return compras;
     }
 
+
 }

@@ -105,6 +105,25 @@ public class ComputadoraDAO extends CrudDAO<ComputadoraModelo> {
         return false;
     }
 
+    // Obtener computadora por su nombre
+    public ComputadoraModelo findComputadoraByName(String nombre) throws SQLException {
+        String sql = "SELECT * FROM Computadora WHERE nombre = ?";
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new ComputadoraModelo(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getDouble("precio_venta")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
     // Funcion para obtener todas las computadoras disponibles
     public List<ComputadoraModelo> findByEstado(boolean estado) throws SQLException {
         List<ComputadoraModelo> computadoras = new ArrayList<>();

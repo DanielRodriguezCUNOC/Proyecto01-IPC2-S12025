@@ -15,7 +15,7 @@
         <div class="bg-blue-500 text-white p-4 rounded-lg shadow-lg text-center">
             <h2 class="text-lg font-semibold">Registrar Venta</h2>
             <p class="text-sm mb-2">Registra una nueva venta y genera un comprobante.</p>
-            <a href="/HappyComputer_war/AREA_VENTAS/Venta.jsp" class="underline">Ir a Registrar</a>
+            <a href="${pageContext.request.contextPath}/SvVenta" class="underline">Ir a Registrar</a>
         </div>
 
         <div class="bg-green-500 text-white p-4 rounded-lg shadow-lg text-center">
@@ -47,7 +47,13 @@
             <p class="text-sm mb-2">Consulta el resumen de las ventas realizadas hoy.</p>
             <a href="${pageContext.request.contextPath}/SvVenta?action=ventaDelDia" class="underline">Ver Reporte</a>
         </div>
+
+        <div class="bg-indigo-500 text-white p-4 rounded-lg shadow-lg text-center">
+            <h2 class="text-lg font-semibold">Registrar Cliente</h2>
+            <p class="text-sm mb-2">Registra un nuevo cliente en la base de datos.</p>
+            <a href="${pageContext.request.contextPath}/AREA_VENTAS/registrarCliente.jsp" class="underline">Registrar
+                Cliente</a>
+        </div>
     </div>
-</div>
 </body>
 </html>
