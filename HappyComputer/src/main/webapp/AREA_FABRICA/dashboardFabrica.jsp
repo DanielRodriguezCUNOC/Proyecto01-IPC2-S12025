@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Dashboard Fábrica</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <!-- Icono -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/assemble.png">
 </head>

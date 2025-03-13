@@ -1,5 +1,7 @@
 package com.happycomputer.persistenciadatos;
 
+import com.happycomputer.dto.ReporteComputadoraMasVendidaDTO;
+import com.happycomputer.dto.ReporteComputadoraMenosVendidaDTO;
 import com.happycomputer.dto.ReporteUsuarioVentaDTO;
 import com.happycomputer.dto.ReporteVentaDTO;
 import com.happycomputer.util.ConectDB;
@@ -93,6 +95,124 @@ public class ReporteVentaDAO {
                     venta.setNombreCliente(rsDetalle.getString("nombreCliente"));
                     venta.setFechaVenta(rsDetalle.getDate("fechaVenta"));
                     venta.setNombreComputadora(rsDetalle.getString("nombreComputadora"));
+                    venta.setPrecioUnitario(rsDetalle.getDouble("precioUnitario"));
+                    venta.setCantidad(rsDetalle.getInt("cantidad"));
+                    ventas.add(venta);
+                }
+                reporte.setVentas(ventas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reporte;
+    }
+
+    //Funcion para obtener la computadora mas vendida
+    public ReporteComputadoraMasVendidaDTO obtenerComputadoraMasVendida(Date fechaInicio, Date fechaFin) {
+        ReporteComputadoraMasVendidaDTO reporte = new ReporteComputadoraMasVendidaDTO();
+        String sqlComputadoraMasVendida = "SELECT co.id AS idComputadora, co.nombre AS nombreComputadora, COUNT(dv.id) AS totalVentas " +
+                "FROM Detalle_Venta dv " +
+                "JOIN Computadora co ON dv.id_computadora = co.id " +
+                "JOIN Venta v ON dv.id_venta = v.id " +
+                "WHERE v.fecha BETWEEN ? AND ? " +
+                "GROUP BY co.id, co.nombre " +
+                "ORDER BY totalVentas DESC " +
+                "LIMIT 1";
+
+        String sqlDetalleVentas = "SELECT v.id AS idVenta, c.nombre AS nombreCliente, v.fecha AS fechaVenta, " +
+                "dv.precio_unidad AS precioUnitario, dv.cantidad " +
+                "FROM Venta v " +
+                "JOIN Cliente c ON v.id_cliente = c.nit " +
+                "JOIN Detalle_Venta dv ON v.id = dv.id_venta " +
+                "JOIN Computadora co ON dv.id_computadora = co.id " +
+                "WHERE co.id = ? AND v.fecha BETWEEN ? AND ?";
+
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement psComputadora = con.prepareStatement(sqlComputadoraMasVendida);
+             PreparedStatement psDetalle = con.prepareStatement(sqlDetalleVentas)) {
+
+            // Obtener la computadora más vendida
+            psComputadora.setDate(1, new java.sql.Date(fechaInicio.getTime()));
+            psComputadora.setDate(2, new java.sql.Date(fechaFin.getTime()));
+            ResultSet rsComputadora = psComputadora.executeQuery();
+
+            if (rsComputadora.next()) {
+                reporte.setIdComputadora(rsComputadora.getInt("idComputadora"));
+                reporte.setNombreComputadora(rsComputadora.getString("nombreComputadora"));
+                reporte.setTotalVentas(rsComputadora.getInt("totalVentas"));
+
+                // Obtener los detalles de las ventas de la computadora
+                psDetalle.setInt(1, reporte.getIdComputadora());
+                psDetalle.setDate(2, new java.sql.Date(fechaInicio.getTime()));
+                psDetalle.setDate(3, new java.sql.Date(fechaFin.getTime()));
+                ResultSet rsDetalle = psDetalle.executeQuery();
+
+                List<ReporteVentaDTO> ventas = new ArrayList<>();
+                while (rsDetalle.next()) {
+                    ReporteVentaDTO venta = new ReporteVentaDTO();
+                    venta.setIdVenta(rsDetalle.getInt("idVenta"));
+                    venta.setNombreCliente(rsDetalle.getString("nombreCliente"));
+                    venta.setFechaVenta(rsDetalle.getDate("fechaVenta"));
+                    venta.setNombreComputadora(reporte.getNombreComputadora());
+                    venta.setPrecioUnitario(rsDetalle.getDouble("precioUnitario"));
+                    venta.setCantidad(rsDetalle.getInt("cantidad"));
+                    ventas.add(venta);
+                }
+                reporte.setVentas(ventas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reporte;
+    }
+
+    // Funcion para obtener la computadora menos vendida
+    public ReporteComputadoraMenosVendidaDTO obtenerComputadoraMenosVendida(Date fechaInicio, Date fechaFin) {
+        ReporteComputadoraMenosVendidaDTO reporte = new ReporteComputadoraMenosVendidaDTO();
+        String sqlComputadoraMenosVendida = "SELECT co.id AS idComputadora, co.nombre AS nombreComputadora, COUNT(dv.id) AS totalVentas " +
+                "FROM Detalle_Venta dv " +
+                "JOIN Computadora co ON dv.id_computadora = co.id " +
+                "JOIN Venta v ON dv.id_venta = v.id " +
+                "WHERE v.fecha BETWEEN ? AND ? " +
+                "GROUP BY co.id, co.nombre " +
+                "ORDER BY totalVentas ASC " +
+                "LIMIT 1";
+
+        String sqlDetalleVentas = "SELECT v.id AS idVenta, c.nombre AS nombreCliente, v.fecha AS fechaVenta, " +
+                "dv.precio_unidad AS precioUnitario, dv.cantidad " +
+                "FROM Venta v " +
+                "JOIN Cliente c ON v.id_cliente = c.nit " +
+                "JOIN Detalle_Venta dv ON v.id = dv.id_venta " +
+                "JOIN Computadora co ON dv.id_computadora = co.id " +
+                "WHERE co.id = ? AND v.fecha BETWEEN ? AND ?";
+
+        try (Connection con = ConectDB.getConnection();
+             PreparedStatement psComputadora = con.prepareStatement(sqlComputadoraMenosVendida);
+             PreparedStatement psDetalle = con.prepareStatement(sqlDetalleVentas)) {
+
+            // Obtener la computadora menos vendida
+            psComputadora.setDate(1, new java.sql.Date(fechaInicio.getTime()));
+            psComputadora.setDate(2, new java.sql.Date(fechaFin.getTime()));
+            ResultSet rsComputadora = psComputadora.executeQuery();
+
+            if (rsComputadora.next()) {
+                reporte.setIdComputadora(rsComputadora.getInt("idComputadora"));
+                reporte.setNombreComputadora(rsComputadora.getString("nombreComputadora"));
+                reporte.setTotalVentas(rsComputadora.getInt("totalVentas"));
+
+                // Obtener los detalles de las ventas de la computadora
+                psDetalle.setInt(1, reporte.getIdComputadora());
+                psDetalle.setDate(2, new java.sql.Date(fechaInicio.getTime()));
+                psDetalle.setDate(3, new java.sql.Date(fechaFin.getTime()));
+                ResultSet rsDetalle = psDetalle.executeQuery();
+
+                List<ReporteVentaDTO> ventas = new ArrayList<>();
+                while (rsDetalle.next()) {
+                    ReporteVentaDTO venta = new ReporteVentaDTO();
+                    venta.setIdVenta(rsDetalle.getInt("idVenta"));
+                    venta.setNombreCliente(rsDetalle.getString("nombreCliente"));
+                    venta.setFechaVenta(rsDetalle.getDate("fechaVenta"));
+                    venta.setNombreComputadora(reporte.getNombreComputadora());
                     venta.setPrecioUnitario(rsDetalle.getDouble("precioUnitario"));
                     venta.setCantidad(rsDetalle.getInt("cantidad"));
                     ventas.add(venta);

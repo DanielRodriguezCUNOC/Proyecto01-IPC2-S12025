@@ -39,7 +39,7 @@ public class SvCrearComputadora extends HttpServlet {
         try {
             List<PiezaModelo> piezas = piezaDAO.findAll();
             request.setAttribute("piezas", piezas);
-            request.getRequestDispatcher("/AREA_FABRICA/crearComputadora.jsp").forward(request, response);
+            request.getRequestDispatcher("/AREA_ADMIN/crearComputadora.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error al obtener las piezas", e);
         }
@@ -64,7 +64,7 @@ public class SvCrearComputadora extends HttpServlet {
         try {
             if (computadoraDAO.findByNombre(nombreComputadora)) {
                 request.setAttribute("error", "Ya existe una computadora con ese nombre");
-                request.getRequestDispatcher("/AREA_FABRICA/ensamblarComputadora.jsp").forward(request, response);
+                request.getRequestDispatcher("/AREA_FABRICA/crearComputadora.jsp").forward(request, response);
                 return;
             }
             //* Crear la computadora en la tabla Computadora
@@ -83,9 +83,7 @@ public class SvCrearComputadora extends HttpServlet {
                     ensamblePiezaDAO.insert(ensamblePieza);
                 }
             }
-
-
-            response.sendRedirect("SvEnsamblaje");
+            response.sendRedirect("/SvCrearComputadora");
         } catch (SQLException e) {
             throw new ServletException("Error al insertar la computadora", e);
         }

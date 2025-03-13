@@ -10,10 +10,10 @@
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">
     <!-- Botón para volver al Dashboard -->
-    <a href="/HappyComputer_war/AREA_FABRICA/dashboardFabrica.jsp"
-       class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Ensamblaje</a>
+    <a href="${pageContext.request.contextPath}/AREA_ADMIN/dashboardAdministracion.jsp"
+       class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Volver al Dashboard de Administracion</a>
 
-    <h1 class="text-2xl font-bold mb-4">Ensamblar Computadora</h1>
+    <h1 class="text-2xl font-bold mb-4">Crear Computadora</h1>
     <form action="${pageContext.request.contextPath}/SvCrearComputadora" method="post"
           class="bg-white p-6 rounded shadow-md" onsubmit="return validateForm()">
         <div class="mb-4">

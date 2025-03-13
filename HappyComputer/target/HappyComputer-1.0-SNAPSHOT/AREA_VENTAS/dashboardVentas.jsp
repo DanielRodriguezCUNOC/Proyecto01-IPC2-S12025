@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Ventas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Icono -->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/sale.png">
 </head>
 <body class="bg-gray-100">
 <div class="container mx-auto p-4">

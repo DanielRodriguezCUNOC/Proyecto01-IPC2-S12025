@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Agregar Pieza al Inventario</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/assemble.png">
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">

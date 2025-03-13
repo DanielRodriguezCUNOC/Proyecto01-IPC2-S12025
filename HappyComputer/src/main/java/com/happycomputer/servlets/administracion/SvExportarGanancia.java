@@ -1,10 +1,7 @@
 package com.happycomputer.servlets.administracion;
 
 import com.happycomputer.dto.ReporteGananciaDTO;
-import com.happycomputer.dto.ReporteUsuarioVentaDTO;
-import com.happycomputer.dto.ReporteVentaDTO;
 import com.happycomputer.persistenciadatos.ReporteGananciaDAO;
-import com.happycomputer.persistenciadatos.ReporteVentaDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,11 +55,6 @@ public class SvExportarGanancia extends HttpServlet {
                         ganancia.getCostoProduccion() + "," +
                         ganancia.getGanancia());
             }
-
-
-            // Obtener las ventas del reporte
-
-            // Escribir cada venta en el archivo CSV
 
             // Cerrar el PrintWriter
             out.close();

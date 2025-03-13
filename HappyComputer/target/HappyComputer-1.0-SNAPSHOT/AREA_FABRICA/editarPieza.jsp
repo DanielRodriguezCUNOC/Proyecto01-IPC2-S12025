@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Editar Pieza</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">
 <div class="container mx-auto p-4">

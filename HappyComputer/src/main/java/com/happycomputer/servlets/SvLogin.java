@@ -42,7 +42,7 @@ public class SvLogin extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/AREA_VENTAS/dashboardVentas.jsp");
 
                 } else if (user.getIdRol().equals(3)) {
-                    response.sendRedirect(request.getContextPath() + "/AREA_FINANCIERA/dashboardAdministracion.jsp");
+                    response.sendRedirect(request.getContextPath() + "/AREA_ADMIN/dashboardAdministracion.jsp");
                 }
             } else {
                 request.setAttribute("error", "usuario o password incorretos");

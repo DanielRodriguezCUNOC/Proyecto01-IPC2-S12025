@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Crear Pieza</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">

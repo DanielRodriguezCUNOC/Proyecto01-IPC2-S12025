@@ -12,7 +12,7 @@
     <h1 class="text-2xl font-bold mb-6 text-center">Reporte de Devoluciones</h1>
 
     <!-- Botón para exportar a CSV -->
-    <form action="${pageContext.request.contextPath}/ExportarCSVDevolucionesServlet" method="post" class="mb-4">
+    <form action="${pageContext.request.contextPath}/SvExportarDevolucion" method="post" class="mb-4">
         <input type="hidden" name="fechaInicio" value="${param.fechaInicio}">
         <input type="hidden" name="fechaFin" value="${param.fechaFin}">
         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Exportar a CSV

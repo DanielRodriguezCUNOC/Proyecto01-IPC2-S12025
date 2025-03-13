@@ -34,16 +34,13 @@ public class SvEnsamblaje extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //* Obtener al usuario de la sesion
         HttpSession session = request.getSession();
         UsuarioModelo usuario = (UsuarioModelo) session.getAttribute("usuario");
-        if (usuario == null || usuario.getIdRol() != 1) {
-            response.sendRedirect("login.jsp");
+        if (usuario == null || (usuario.getIdRol() != 1 && usuario.getIdRol() != 3)) {
+            // Regresar al login
+            response.sendRedirect("index.jsp");
             return;
         }
         int idUsuario = usuario.getId();
@@ -52,7 +49,7 @@ public class SvEnsamblaje extends HttpServlet {
         try {
             ComputadoraModelo computadoraModelo = computadoraDAO.findById(idComputadora);
             if (computadoraModelo == null) {
-                request.setAttribute("error", "El computadora no existe");
+                request.setAttribute("error", "La computadora no existe");
                 request.getRequestDispatcher("/AREA_FABRICA/seleccionarComputadora.jsp").forward(request, response);
                 return;
             }
@@ -68,14 +65,13 @@ public class SvEnsamblaje extends HttpServlet {
                         String nombrePieza = (pieza != null) ? pieza.getNombre() : "Pieza Desconocida";
 
                         request.setAttribute("error", "No hay suficientes piezas en el inventario para " + nombrePieza);
-                        request.getRequestDispatcher("/AREA_FABRICA/seleccionarPiezas.jsp").forward(request, response);
+                        request.getRequestDispatcher("/AREA_FABRICA/.jsp").forward(request, response);
                         return;
                     }
                 } catch (SQLException e) {
                     throw new ServletException("Error al obtener el inventario de piezas", e);
                 }
             }
-
             // Reducir la cantidad de piezas en el inventario
             for (EnsamblePiezaModelo ensamblePieza : piezasNecesarias) {
                 InventarioPiezaModelo inventarioPieza = inventarioPiezaDAO.findByIdPieza(ensamblePieza.getIdPieza());
@@ -83,17 +79,17 @@ public class SvEnsamblaje extends HttpServlet {
                 inventarioPieza.setCantidad(nuevaCantidad);
                 inventarioPiezaDAO.update(inventarioPieza);
             }
-
             //* Crear la computadora ensamblada en la tabla Ensamblar_Computadora
             double costoEnsamble = calcularCostoEnsamble(piezasNecesarias);
             EnsamblarComputadoraModelo ensamblarComputadora = new EnsamblarComputadoraModelo(null, idComputadora, idUsuario, new Date(), costoEnsamble);
             ensamblarComputadoraDAO.insert(ensamblarComputadora);
             System.out.println("Computadora ensamblada: " + ensamblarComputadora.getId());
+
             //* Registrar la computadora en el inventario
             InventarioComputadoraModelo inventarioComputadora = new InventarioComputadoraModelo(null, ensamblarComputadora.getId(), 1);
             inventarioComputadoraDAO.insert(inventarioComputadora);
             System.out.println("Inventario computadora: " + inventarioComputadora.getId());
-            response.sendRedirect(request.getContextPath() + "/listarComputadoras.jsp");
+            response.sendRedirect(request.getContextPath() + "AREA_FABRICA/listarComputadoras.jsp");
         } catch (SQLException e) {
             throw new ServletException("Error al insertar la computadora", e);
         }

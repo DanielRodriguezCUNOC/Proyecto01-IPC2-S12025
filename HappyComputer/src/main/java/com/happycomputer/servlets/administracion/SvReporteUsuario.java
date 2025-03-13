@@ -1,6 +1,8 @@
 package com.happycomputer.servlets.administracion;
 
+import com.happycomputer.dto.ReporteGananciaUsuarioDTO;
 import com.happycomputer.dto.ReporteUsuarioVentaDTO;
+import com.happycomputer.persistenciadatos.ReporteGananciaDAO;
 import com.happycomputer.persistenciadatos.ReporteVentaDAO;
 
 import javax.servlet.ServletException;
@@ -37,7 +39,22 @@ public class SvReporteUsuario extends HttpServlet {
                 e.printStackTrace();
             }
         } else {
+            String fechaInicioStr = request.getParameter("fechaInicio");
+            String fechaFinStr = request.getParameter("fechaFin");
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date fechaInicio = sdf.parse(fechaInicioStr);
+                Date fechaFin = sdf.parse(fechaFinStr);
+
+                ReporteGananciaDAO reporteGananciaDAO = new ReporteGananciaDAO();
+                ReporteGananciaUsuarioDTO reporte = reporteGananciaDAO.obtenerUsuarioMasGanancias(fechaInicio, fechaFin);
+
+                request.setAttribute("reporte", reporte);
+                request.getRequestDispatcher("reporteUsuarioMasGanancias.jsp").forward(request, response);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

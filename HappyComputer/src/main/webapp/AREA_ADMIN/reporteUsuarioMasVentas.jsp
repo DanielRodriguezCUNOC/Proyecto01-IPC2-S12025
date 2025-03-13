@@ -11,6 +11,14 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-6 text-center">Reporte de Usuario con Más Ventas</h1>
 
+    <!-- Botón para exportar a CSV -->
+    <form action="${pageContext.request.contextPath}/SvExportarUsuarioVenta" method="post" class="mb-4">
+        <input type="hidden" name="fechaInicio" value="${param.fechaInicio}">
+        <input type="hidden" name="fechaFin" value="${param.fechaFin}">
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Exportar a CSV
+        </button>
+    </form>
+
     <!-- Información del Usuario -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-semibold mb-4">Usuario con Más Ventas</h2>
@@ -46,13 +54,6 @@
             </tbody>
         </table>
     </div>
-    <!-- Botón para exportar a CSV -->
-    <form action="${pageContext.request.contextPath}/SvExportarUsuarioVenta" method="post" class="mb-4">
-        <input type="hidden" name="fechaInicio" value="${param.fechaInicio}">
-        <input type="hidden" name="fechaFin" value="${param.fechaFin}">
-        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Exportar a CSV
-        </button>
-    </form>
 </div>
 </body>
 </html>
